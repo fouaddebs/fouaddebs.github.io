@@ -8,14 +8,15 @@
     <language>en-US</language>
     <lastBuildDate>Fri, 11 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>TestBlogPostFD</title>
-      <link>/post/2020/12/11/testblogpostfd/</link>
+      <title>Post 1</title>
+      <link>/post/2020/12/11/post1/</link>
       <pubDate>Fri, 11 Dec 2020 00:00:00 +0000</pubDate>
       
-      <guid>/post/2020/12/11/testblogpostfd/</guid>
-      <description>Link to project 1
-Link to project 2
-Link to google</description>
+      <guid>/post/2020/12/11/post1/</guid>
+      <description>library(reticulate) hi&amp;lt;-&amp;quot;Hello&amp;quot; hi=&amp;quot;world&amp;quot; print(r.hi,hi) ## Hello world cat(c(hi,py$hi)) ## Hello world Link to Project 1
+Link to Project 2
+Link to Resume
+Link to Google</description>
     </item>
     
     <item>

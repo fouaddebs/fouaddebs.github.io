@@ -1,13 +1,26 @@
 ---
-title: TestBlogPostFD
+title: Post 1
 author: ''
 date: '2020-12-11'
-slug: testblogpostfd
+slug: post1
 categories: []
 tags: []
-description: 'My test blog post!'
+description: 'My first blog post!'
 ---
-[Link to project 1](/project/project1/)   
-[Link to project 2](/project/project2/)   
-[Link to google](https://www.google.com)
+```{r}
+library(reticulate)
+hi<-"Hello"
+```
+```{python}
+hi="world"
+print(r.hi,hi)
+``````{r}
+cat(c(hi,py$hi))
+```
+
+
+[Link to Project 1](/project/project1/)   
+[Link to Project 2](/project/project2/)   
+[Link to Resume](/resume/)  
+[Link to Google](https://www.google.com)
 
