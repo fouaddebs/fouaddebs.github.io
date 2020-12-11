@@ -5,7 +5,7 @@ date: '2020-12-11'
 slug: testblogpostfd
 categories: []
 tags: []
-description: 'jhhhsfjdshjfhs'
+description: 'My test blog post!'
 ---
 [Link to project 1](/project/project1/)   
 [Link to project 2](/project/project2/)   
