@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Fouad Debs" />
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../../img/favicon.ico">
+    <title>Project2</title>
+    <meta name="generator" content="Hugo 0.79.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="../../"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="../../post/">BLOG</a></li>
+        
+        <li><a href="../../projects/">PROJECTS</a></li>
+        
+        <li><a href="../../resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="../../project/project2/">Project2</a></strong>
+          </h3>
+        </div>
+ 
+<div class="blog-title">
+          <h4>
+         January 1, 0001 
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<div id="as-an-avid-sports-fan-i-was-intrigued-by-this-data-set-that-collects-data-regarding-whether-or-not-ownership-of-a-sports-souvenir-increases-its-value.-the-good-variable-represents-which-good-the-individual-was-given-whether-it-was-good-a-or-good-b.-good-a-is-a-ticket-stub-from-the-game-that-cal-ripken-jr.-set-the-record-for-consecutive-games-played-while-good-b-was-a-souvenir-from-the-game-that-nolan-ryan-won-his-300th-game.-these-two-sports-souvenirs-had-identical-market-value-prior-to-this-experiment.-each-individual-was-then-given-the-option-to-trade-their-good-for-the-other-good-based-on-personal-preference.-this-choice-is-shown-by-the-trade-variable.-the-dealer-variable-represents-whether-or-not-the-individual-is-a-sports-cardsouvenir-dealer.-the-permonth-variable-represents-the-number-of-trades-that-the-individual-makes-per-month.-the-years-variable-represents-the-number-of-years-the-individual-has-been-trading.-the-income-variable-represents-the-income-class-that-an-individual-is-in-in-1000.-obviously-the-gender-variable-indicates-gender-while-the-age-variable-indicates-age.-the-education-variable-indicates-the-highest-level-of-education-that-the-individual-has-achieved.-there-are-a-total-of-148-observations-in-the-dataset." class="section level5">
+<h5>As an avid sports fan, I was intrigued by this data set that collects data regarding whether or not ownership of a sports souvenir increases its value. The &quot;good&quot; variable represents which good the individual was given, whether it was good A or good B. Good A is a ticket stub from the game that Cal Ripken Jr. set the record for consecutive games played, while Good B was a souvenir from the game that Nolan Ryan won his 300th game. These two sports souvenirs had identical market value prior to this experiment. Each individual was then given the option to trade their good for the other good based on personal preference. This choice is shown by the &quot;trade&quot; variable. The &quot;dealer&quot; variable represents whether or not the individual is a sports card/souvenir dealer. The &quot;permonth&quot; variable represents the number of trades that the individual makes per month. The &quot;years&quot; variable represents the number of years the individual has been trading. The &quot;income&quot; variable represents the income class that an individual is in (in $1000). Obviously, the &quot;gender&quot; variable indicates gender, while the &quot;age&quot; variable indicates age. The &quot;education&quot; variable indicates the highest level of education that the individual has achieved. There are a total of 148 observations in the dataset.</h5>
+<pre class="r"><code>library(readxl)
+library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+## ✓ tibble  3.0.3     ✓ dplyr   1.0.1
+## ✓ tidyr   1.1.1     ✓ stringr 1.4.0
+## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>#loading in dataset
+SportsCards &lt;- read_csv(&quot;SportsCards.csv&quot;)</code></pre>
+<pre><code>## Warning: Missing column names filled in: &#39;X1&#39; [1]</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   X1 = col_double(),
+##   good = col_character(),
+##   dealer = col_character(),
+##   permonth = col_double(),
+##   years = col_double(),
+##   income = col_character(),
+##   gender = col_character(),
+##   education = col_character(),
+##   age = col_double(),
+##   trade = col_character()
+## )</code></pre>
+<pre class="r"><code>#Turn gender into a binary variable
+SportsCards &lt;- SportsCards %&gt;% mutate(y = ifelse(gender==&quot;male&quot;, 1, 0))</code></pre>
+</div>
+</div>
+<div id="manova-testing" class="section level2">
+<h2>MANOVA Testing</h2>
+<pre class="r"><code>library(dplyr)
+
+library(rstatix)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;rstatix&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     filter</code></pre>
+<pre class="r"><code>man1 &lt;- manova(cbind(years, permonth)~trade, data=SportsCards)
+summary(man1)</code></pre>
+<pre><code>##            Df   Pillai approx F num Df den Df   Pr(&gt;F)   
+## trade       1 0.089285   7.1078      2    145 0.001136 **
+## Residuals 146                                            
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>summary.aov(man1)</code></pre>
+<pre><code>##  Response years :
+##              Df Sum Sq Mean Sq F value Pr(&gt;F)
+## trade         1      7   7.043  0.1012 0.7508
+## Residuals   146  10159  69.581               
+## 
+##  Response permonth :
+##              Df  Sum Sq Mean Sq F value   Pr(&gt;F)    
+## trade         1  1317.3 1317.30  14.057 0.000255 ***
+## Residuals   146 13681.9   93.71                     
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>SportsCards%&gt;%group_by(trade)%&gt;%summarize(mean(years),mean(permonth))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 2 x 3
+##   trade `mean(years)` `mean(permonth)`
+##   &lt;chr&gt;         &lt;dbl&gt;            &lt;dbl&gt;
+## 1 no             8.81             8.11
+## 2 yes            8.35            14.4</code></pre>
+<pre class="r"><code>pairwise.t.test(SportsCards$permonth, SportsCards$trade, p.adj = &quot;none&quot;)</code></pre>
+<pre><code>## 
+##  Pairwise comparisons using t tests with pooled SD 
+## 
+## data:  SportsCards$permonth and SportsCards$trade 
+## 
+##     no     
+## yes 0.00025
+## 
+## P value adjustment method: none</code></pre>
+<pre class="r"><code>#Finding probability of Type I Error
+1-(0.95)^5</code></pre>
+<pre><code>## [1] 0.2262191</code></pre>
+<pre class="r"><code>#Bonferroni correction
+(0.05/5)</code></pre>
+<pre><code>## [1] 0.01</code></pre>
+<pre class="r"><code>group &lt;- SportsCards$trade 
+DVs &lt;- SportsCards %&gt;% select(years, permonth)
+
+#Test multivariate normality for each group (null: assumption met)
+sapply(split(DVs,group), mshapiro_test)</code></pre>
+<pre><code>##           no           yes         
+## statistic 0.7471121    0.8017925   
+## p.value   1.068704e-11 9.644208e-07</code></pre>
+<pre class="r"><code>#Box&#39;s M test (null: homogeneity of vcov mats assumption met)
+box_m(DVs, group)</code></pre>
+<pre><code>## # A tibble: 1 x 4
+##   statistic   p.value parameter method                                          
+##       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;                                           
+## 1      24.6 0.0000184         3 Box&#39;s M-test for Homogeneity of Covariance Matr…</code></pre>
+<pre class="r"><code>#Covariance matrices for each group
+lapply(split(DVs,group), cov)</code></pre>
+<pre><code>## $no
+##              years  permonth
+## years    89.502656  4.191511
+## permonth  4.191511 69.956343
+## 
+## $yes
+##              years   permonth
+## years    30.145408   3.758163
+## permonth  3.758163 140.738367</code></pre>
+<pre class="r"><code>ggplot(SportsCards, aes(x = years, y = permonth)) +  geom_point(alpha = .5) + geom_density_2d(h=2) + coord_fixed() + facet_wrap(~trade)</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<div id="i-conducted-a-manova-test-to-determine-the-relationship-between-the-trade-variable-which-highlights-whether-or-not-an-individual-decided-to-trade-their-sports-souvenir-and-two-numeric-variables.-the-two-numeric-variables-are-years-years-spent-trading-and-permonth-the-number-of-trades-an-individual-makes-per-month.-with-a-p-value-of-0.001136-the-manova-test-had-at-least-one-significant-effect-with-one-of-the-numeric-variables.-to-discover-which-variable-this-was-i-conducted-univariate-anovas-for-years-and-permonth.-the-anova-for-permonth-was-statistically-significant-as-it-had-an-f-value-of-14.057-and-a-p-value-of-0.000255.-afterwards-i-conducted-a-post-hoc-t-test-to-determine-how-the-trade-variable-differed-based-on-permonth-trades-made-per-month.-to-calculate-the-type-i-error-and-bonferroni-adjusted-signficance-level-i-counted-the-number-of-tests-conducted-which-was-1-manova-2-anovas-and-2-t-tests.-this-breaks-down-to-a-total-of-5-tests-which-means-the-probability-of-a-type-i-error-is-1-0.955-0.2262191.-the-bonferroni-adjusted-significance-level-comes-out-to-0.055-0.01.-because-the-p-value-in-the-post-hoc-tests-was-significantly-lower-than-the-bonferroni-adjusted-signficiance-level-individuals-who-choose-to-trade-and-who-choose-not-to-trade-are-statistically-different-according-to-the-individuals-trades-made-per-month.-when-assessing-the-assumptions-of-the-manova-test-it-is-clear-that-the-m-shapiro-test-fails-the-multivariate-normalility-assumptions-for-both-groups-with-two-p-values-that-are-significantly-less-than-0.05.-the-boxs-m-test-also-shows-a-failure-of-the-homogeneity-of-vcov-mats-assumption-to-be-met.-the-multivariate-plots-that-are-included-further-provide-evidence-of-the-failed-assumptions." class="section level6">
+<h6>I conducted a MANOVA test to determine the relationship between the trade variable, which highlights whether or not an individual decided to trade their sports souvenir, and two numeric variables. The two numeric variables are years (years spent trading) and permonth (the number of trades an individual makes per month). With a p-value of 0.001136, the MANOVA test had at least one significant effect with one of the numeric variables. To discover which variable this was, I conducted univariate ANOVAs for years and permonth. The ANOVA for permonth was statistically significant as it had an F value of 14.057 and a p-value of 0.000255. Afterwards, I conducted a post-hoc t test to determine how the trade variable differed based on permonth (trades made per month). To calculate the Type I error and Bonferroni adjusted signficance level, I counted the number of tests conducted, which was 1 MANOVA, 2 ANOVAs, and 2 t tests. This breaks down to a total of 5 tests, which means the probability of a Type I error is 1-(0.95)^5 = 0.2262191. The Bonferroni adjusted significance level comes out to (0.05/5) = 0.01. Because the p-value in the post-hoc tests was significantly lower than the Bonferroni adjusted signficiance level, individuals who choose to trade and who choose not to trade are statistically different according to the individual's trades made per month. When assessing the assumptions of the MANOVA test, it is clear that the M Shapiro Test fails the multivariate normalility assumptions for both groups with two p-values that are significantly less than 0.05. The Box's M test also shows a failure of the homogeneity of vcov mats assumption to be met. The multivariate plots that are included further provide evidence of the failed assumptions.</h6>
+</div>
+</div>
+<div id="randomization-test" class="section level2">
+<h2>Randomization Test</h2>
+<pre class="r"><code>SportsCards %&gt;% group_by(dealer) %&gt;% summarize(means = mean(permonth)) %&gt;% summarize(diff(means))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   `diff(means)`
+##           &lt;dbl&gt;
+## 1          9.16</code></pre>
+<pre class="r"><code>random_distribution &lt;- vector() 
+for (i in 1:5000) {
+randomnew &lt;- data.frame(permonth = sample(SportsCards$permonth), dealer = SportsCards$dealer) 
+random_distribution[i] &lt;- mean(randomnew[randomnew$dealer == &quot;yes&quot;, ]$permonth) - mean(randomnew[randomnew$dealer == &quot;no&quot;, ]$permonth)
+}
+
+mean(random_distribution &gt; 9.162162    | random_distribution &lt; -9.162162)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code>t.test(data = SportsCards, permonth ~ dealer)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  permonth by dealer
+## t = -6.1748, df = 117.42, p-value = 9.796e-09
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -12.100628  -6.223696
+## sample estimates:
+##  mean in group no mean in group yes 
+##          5.662162         14.824324</code></pre>
+<pre class="r"><code>{
+  hist(random_distribution, main = &quot;Histogram&quot;); abline(v = c(-9.162162, 9.162162), col=&quot;purple&quot;)
+}</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<div id="a-randomization-test-to-determine-whether-or-not-an-individual-being-a-dealer-effects-the-number-of-trades-made-per-month-is-conducted-and-a-difference-of-means-of-approximately-9.162-trades-per-month-is-found.-this-yields-a-p-value-that-is-0-which-is-evidently-less-than-a-significance-level-of-0.05.-the-welchs-t-test-that-is-run-confirms-this-result-as-the-p-value-for-that-is-essentially-0-as-well.-this-means-that-there-is-a-significant-difference-between-the-number-of-trades-made-per-month-between-an-individual-that-considers-themselves-a-dealer-and-one-that-does-not.-with-no-purple-lines-on-the-histogram-it-is-clear-that-the-two-are-significantly-different." class="section level6">
+<h6>A randomization test to determine whether or not an individual being a dealer effects the number of trades made per month is conducted and a difference of means of approximately 9.162 trades per month is found. This yields a p-value that is 0, which is evidently less than a significance level of 0.05. The Welch's t-test that is run confirms this result, as the p-value for that is essentially 0 as well. This means that there is a significant difference between the number of trades made per month between an individual that considers themselves a dealer and one that does not. With no purple lines on the histogram it is clear that the two are significantly different.</h6>
+</div>
+</div>
+<div id="linear-regression-model" class="section level2">
+<h2>Linear Regression Model</h2>
+<pre class="r"><code>#load in libraries to try to fix knitting issues
+library(lmtest)</code></pre>
+<pre><code>## Loading required package: zoo</code></pre>
+<pre><code>## 
+## Attaching package: &#39;zoo&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     as.Date, as.Date.numeric</code></pre>
+<pre class="r"><code>library(tidyverse)
+library(sandwich)
+library(cluster)
+
+set.seed(348)
+
+#Centering around the mean in two numeric variables and conduct linear regression
+SportsCards$centeredyears &lt;- (SportsCards$years - mean(SportsCards$years, na.rm = TRUE))
+SportsCards$centeredpermonth &lt;- (SportsCards$permonth - mean(SportsCards$permonth, na.rm = TRUE))
+
+reg &lt;- lm(centeredyears ~ centeredpermonth * trade, data = SportsCards)
+summary(reg)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = centeredyears ~ centeredpermonth * trade, data = SportsCards)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -8.804 -5.542 -1.519  2.718 51.495 
+## 
+## Coefficients:
+##                           Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)                0.28350    0.87457   0.324    0.746
+## centeredpermonth           0.05992    0.10182   0.588    0.557
+## tradeyes                  -0.70044    1.53288  -0.457    0.648
+## centeredpermonth:tradeyes -0.03321    0.14341  -0.232    0.817
+## 
+## Residual standard error: 8.387 on 144 degrees of freedom
+## Multiple R-squared:  0.003573,   Adjusted R-squared:  -0.01719 
+## F-statistic: 0.1721 on 3 and 144 DF,  p-value: 0.9151</code></pre>
+<pre class="r"><code>ggplot(SportsCards, aes(x = centeredyears, y = centeredpermonth, group = trade)) + geom_point(aes(color=trade)) + geom_smooth(method = &quot;lm&quot;, aes(color = trade))</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>#Check assumptions
+ggplot() + geom_point(aes(reg$fitted.values, reg$residuals)) + geom_hline(yintercept = 0, color = &#39;purple&#39;)</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre class="r"><code>bptest(reg)</code></pre>
+<pre><code>## 
+##  studentized Breusch-Pagan test
+## 
+## data:  reg
+## BP = 3.1497, df = 3, p-value = 0.3691</code></pre>
+<pre class="r"><code>ks.test(reg$residuals, &quot;pnorm&quot;, mean = 0, sd(reg$residuals))</code></pre>
+<pre><code>## Warning in ks.test(reg$residuals, &quot;pnorm&quot;, mean = 0, sd(reg$residuals)): ties
+## should not be present for the Kolmogorov-Smirnov test</code></pre>
+<pre><code>## 
+##  One-sample Kolmogorov-Smirnov test
+## 
+## data:  reg$residuals
+## D = 0.14911, p-value = 0.002772
+## alternative hypothesis: two-sided</code></pre>
+<pre class="r"><code>coeftest(reg, vcov = vcovHC(reg))</code></pre>
+<pre><code>## 
+## t test of coefficients:
+## 
+##                            Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)                0.283500   0.910726  0.3113   0.7560
+## centeredpermonth           0.059916   0.097070  0.6172   0.5380
+## tradeyes                  -0.700438   1.245460 -0.5624   0.5747
+## centeredpermonth:tradeyes -0.033213   0.114292 -0.2906   0.7718</code></pre>
+<pre class="r"><code>summary(reg)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = centeredyears ~ centeredpermonth * trade, data = SportsCards)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -8.804 -5.542 -1.519  2.718 51.495 
+## 
+## Coefficients:
+##                           Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)                0.28350    0.87457   0.324    0.746
+## centeredpermonth           0.05992    0.10182   0.588    0.557
+## tradeyes                  -0.70044    1.53288  -0.457    0.648
+## centeredpermonth:tradeyes -0.03321    0.14341  -0.232    0.817
+## 
+## Residual standard error: 8.387 on 144 degrees of freedom
+## Multiple R-squared:  0.003573,   Adjusted R-squared:  -0.01719 
+## F-statistic: 0.1721 on 3 and 144 DF,  p-value: 0.9151</code></pre>
+<div id="a-linear-regression-model-was-conducted-using-the-numeric-variables-years-and-permonth-both-centered-around-their-respective-means-along-with-the-trade-variable.-controlling-for-trade-centeredyears-increases-by-0.059916-with-every-increase-of-1-unit-in-centeredpermonth-t-statistic-0.6172-p-value-0.538-not-statistically-significant.-controlling-for-centeredpermonth-individuals-who-chose-to-trade-their-sports-souvenir-have-a-centeredyears-value-that-is-approximately-0.700438-units-lower-than-individuals-who-chose-not-to-trade-t-statistic-0.5624-p-value-0.5747-not-statistically-significant.-the-slope-for-centeredpermonth-on-centeredyears-is-approximately-0.03321-units-lower-for-individuals-that-chose-to-trade-compared-to-those-that-chose-not-to-trade-t-statistic-0.2906-p-value-0.7718-not-statistically-significant.-because-all-of-the-p-values-are-larger-than-a-significance-level-of-0.05-the-linearity-homoskedasticity-and-normality-assumptions-can-all-be-considered-to-be-met.-when-redoing-the-linear-regression-model-with-the-robust-standard-errors-the-model-is-nearly-identical-with-p-values-that-are-all-still-significantly-greater-than-0.05.-the-r-squared-value-of-this-second-regression-is-0.003573-which-is-the-proportion-of-variation-in-the-response-variable-explained-by-the-linear-model." class="section level6">
+<h6>A linear regression model was conducted using the numeric variables years and permonth, both centered around their respective means, along with the trade variable. Controlling for trade, centeredyears increases by 0.059916 with every increase of 1 unit in centeredpermonth (t-statistic = 0.6172, p-value = 0.538, not statistically significant). Controlling for centeredpermonth, individuals who chose to trade their sports souvenir have a centeredyears value that is approximately 0.700438 units lower than individuals who chose not to trade (t-statistic = 0.5624, p-value = 0.5747, not statistically significant). The slope for centeredpermonth on centeredyears is approximately 0.03321 units lower for individuals that chose to trade compared to those that chose not to trade (t-statistic = 0.2906, p-value = 0.7718, not statistically significant). Because all of the p-values are larger than a significance level of 0.05, the linearity, homoskedasticity, and normality assumptions can all be considered to be met. When redoing the linear regression model with the robust standard errors, the model is nearly identical, with p-values that are all still significantly greater than 0.05. The R-squared value of this second regression is 0.003573, which is the proportion of variation in the response variable explained by the linear model.</h6>
+</div>
+</div>
+<div id="bootstrapped-model" class="section level2">
+<h2>Bootstrapped Model</h2>
+<pre class="r"><code>set.seed(348)
+
+reg &lt;- lm(centeredyears ~ centeredpermonth * trade, data = SportsCards)
+summary(reg)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = centeredyears ~ centeredpermonth * trade, data = SportsCards)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -8.804 -5.542 -1.519  2.718 51.495 
+## 
+## Coefficients:
+##                           Estimate Std. Error t value Pr(&gt;|t|)
+## (Intercept)                0.28350    0.87457   0.324    0.746
+## centeredpermonth           0.05992    0.10182   0.588    0.557
+## tradeyes                  -0.70044    1.53288  -0.457    0.648
+## centeredpermonth:tradeyes -0.03321    0.14341  -0.232    0.817
+## 
+## Residual standard error: 8.387 on 144 degrees of freedom
+## Multiple R-squared:  0.003573,   Adjusted R-squared:  -0.01719 
+## F-statistic: 0.1721 on 3 and 144 DF,  p-value: 0.9151</code></pre>
+<pre class="r"><code>residuals &lt;- reg$residuals
+fittedvals &lt;- reg$fitted.values
+
+residual_replicate &lt;- replicate(5000, {
+  newresiduals&lt;-sample(residuals,replace=T)
+SportsCards$new_yvar&lt;- fittedvals + newresiduals
+reg2 &lt;- lm(new_yvar ~ centeredyears * trade, data=SportsCards)
+coef(reg2) 
+})
+
+residual_replicate %&gt;% t %&gt;% as.data.frame %&gt;% summarize_all(sd)</code></pre>
+<pre><code>##   (Intercept) centeredyears tradeyes centeredyears:tradeyes
+## 1   0.8377157    0.08708512 1.435687              0.2298385</code></pre>
+<div id="the-standard-errors-for-the-bootstrapped-model-are-different-from-the-original-standard-errors-and-robust-standard-errors.-the-bootstrapped-se-for-centeredpermonth-is-approximately-0.0871-1.4357-for-tradeyes-and-0.2298-for-the-interaction-between-the-two.-the-original-standard-error-of-centeredpermonth-was-0.097-the-original-standard-error-of-tradeyes-was-1.245-and-the-original-standard-error-of-the-interactionslope-was-0.114.-therefore-the-bootstrapped-model-has-a-lower-standard-error-for-centeredpermonth-and-a-higher-standard-error-for-tradeyes-and-for-the-interaction-between-the-two." class="section level6">
+<h6>The standard errors for the bootstrapped model are different from the original standard errors and robust standard errors. The bootstrapped SE for centeredpermonth is approximately 0.0871, 1.4357 for tradeyes, and 0.2298 for the interaction between the two. The original standard error of centeredpermonth was 0.097, the original standard error of tradeyes was 1.245, and the original standard error of the interaction/slope was 0.114. Therefore, the bootstrapped model has a lower standard error for centeredpermonth and a higher standard error for tradeyes and for the interaction between the two.</h6>
+</div>
+</div>
+<div id="logistic-regression-model" class="section level2">
+<h2>Logistic Regression Model</h2>
+<pre class="r"><code>logreg &lt;- glm(y ~ years + permonth, data = SportsCards, family = binomial(link = &quot;logit&quot;))
+coeftest(logreg)</code></pre>
+<pre><code>## 
+## z test of coefficients:
+## 
+##             Estimate Std. Error z value Pr(&gt;|z|)   
+## (Intercept) 1.409565   0.470185  2.9979 0.002719 **
+## years       0.098738   0.057747  1.7099 0.087293 . 
+## permonth    0.010886   0.031491  0.3457 0.729588   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code>exp(coef(logreg))</code></pre>
+<pre><code>## (Intercept)       years    permonth 
+##    4.094173    1.103778    1.010945</code></pre>
+<pre class="r"><code>SportsCards &lt;- SportsCards %&gt;% mutate(prob = predict(logreg, type=&quot;response&quot;), prediction=ifelse(prob&gt;.5,1,0))
+classify &lt;- SportsCards %&gt;% transmute(prob, prediction, truth = y)
+table(prediction = classify$prediction, truth=classify$truth) %&gt;% addmargins()</code></pre>
+<pre><code>##           truth
+## prediction   0   1 Sum
+##        1    15 133 148
+##        Sum  15 133 148</code></pre>
+<pre class="r"><code>probability = predict(reg, type = &quot;response&quot;)
+class_diagnostic &lt;- function(probs, truth) {
+    tab &lt;- table(factor(probs &gt; 0.5, levels = c(&quot;FALSE&quot;, &quot;TRUE&quot;)), truth)
+    acc = sum(diag(tab))/sum(tab) 
+    sens = tab[2, 2]/colSums(tab)[2] 
+    spec = tab[1, 1]/colSums(tab)[1] 
+    ppv = tab[2, 2]/rowSums(tab)[2] 
+    if (is.numeric(truth) == FALSE &amp; is.logical(truth) == FALSE)
+      truth &lt;- as.numeric(truth) - 1
+    ord &lt;- order(probs, decreasing = TRUE)
+    probs &lt;- probs[ord]
+    truth &lt;- truth[ord]
+    TPR = cumsum(truth)/max(1, sum(truth))
+    FPR = cumsum(!truth)/max(1, sum(!truth))
+    dup &lt;- c(probs[-1] &gt;= probs[-length(probs)], FALSE)
+    TPR &lt;- c(0, TPR[!dup], 1)
+    FPR &lt;- c(0, FPR[!dup], 1)
+    n &lt;- length(TPR)
+    auc &lt;- sum(((TPR[-1] + TPR[-n])/2) * (FPR[-1] - FPR[-n]))   
+    data.frame(acc, sens, spec, ppv, auc)
+}
+
+class_diagnostic(probability, SportsCards$y)</code></pre>
+<pre><code>##         acc      sens      spec      ppv       auc
+## 1 0.2297297 0.1503759 0.9333333 0.952381 0.4385965</code></pre>
+<pre class="r"><code>SportsCards$logit&lt;-predict(logreg,type=&quot;link&quot;)
+
+SportsCards$yfactor &lt;- as.factor(SportsCards$y) 
+SportsCards %&gt;% group_by(yfactor) %&gt;% ggplot() + geom_density(aes(logit,color=yfactor,fill=yfactor))</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>library(plotROC)
+ROCplot &lt;- ggplot(SportsCards) + geom_roc(aes(d = y, m = prob), n.cuts = 0)
+ROCplot</code></pre>
+<p><img src="../../project/project2_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<pre class="r"><code>calc_auc(ROCplot)</code></pre>
+<pre><code>##   PANEL group       AUC
+## 1     1    -1 0.6488722</code></pre>
+<div id="according-to-this-logistic-model-when-controlling-for-permonth-with-every-1-unit-increase-in-years-the-probabiltiy-of-the-individual-being-male-increases-by-a-factor-of-approximately-1.104.-when-controlling-for-years-with-every-1-unit-increase-in-permonth-the-probability-of-the-individual-being-male-increases-by-a-factor-of-1.011.-the-confusion-matrix-shows-that-the-accuracy-rating-is-0.2297-which-is-the-proportion-of-correct-gender-assignment-for-the-individuals.-the-sensitivity-tpr-is-0.1504-rate-of-true-positives-the-specificity-tnr-is-0.9333-rate-of-true-negatives-and-the-ppv-is-0.9524-the-proportion-of-individuals-classified-as-male-that-are-actually-male.-with-a-calculated-auc-value-of-0.4386-but-a-auc-value-of-0.6489-taken-from-the-plot-it-is-likely-that-the-predicting-level-of-this-model-is-to-be-considered-bad.-the-shape-of-the-roc-plot-does-not-look-like-the-ideal-right-angle-which-further-suggests-that-the-model-is-bad-for-prediction.-this-means-that-gender-can-not-be-accurately-predicted-by-the-years-an-individual-has-spent-trading-and-the-trades-made-per-month." class="section level6">
+<h6>According to this logistic model, when controlling for permonth, with every 1 unit increase in years, the probabiltiy of the individual being male increases by a factor of approximately 1.104. When controlling for years, with every 1 unit increase in permonth, the probability of the individual being male increases by a factor of 1.011. The confusion matrix shows that the accuracy rating is 0.2297, which is the proportion of correct gender assignment for the individuals. The sensitivity (TPR) is 0.1504 (rate of true positives), the specificity (TNR) is 0.9333 (rate of true negatives), and the PPV is 0.9524 (the proportion of individuals classified as male that are actually male). With a calculated AUC value of 0.4386, but a AUC value of 0.6489 taken from the plot, it is likely that the predicting level of this model is to be considered &quot;bad.&quot; The shape of the ROC plot does not look like the ideal right angle, which further suggests that the model is bad for prediction. This means that gender can not be accurately predicted by the years an individual has spent trading and the trades made per month.</h6>
+</div>
+</div>
+<div id="logistic-regression-using-all-variables" class="section level2">
+<h2>Logistic Regression Using All Variables</h2>
+<pre class="r"><code>logreg2 &lt;- glm(y ~ good+dealer+trade+years+permonth, data = SportsCards, family = binomial(link = &quot;logit&quot;))
+summary(logreg2)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = y ~ good + dealer + trade + years + permonth, family = binomial(link = &quot;logit&quot;), 
+##     data = SportsCards)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.5217   0.2822   0.3995   0.5210   0.7786  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)  
+## (Intercept)  1.101839   0.516072   2.135   0.0328 *
+## goodB        0.504387   0.566641   0.890   0.3734  
+## dealeryes    0.359446   0.690941   0.520   0.6029  
+## tradeyes     0.700850   0.715039   0.980   0.3270  
+## years        0.084256   0.059489   1.416   0.1567  
+## permonth    -0.007949   0.034273  -0.232   0.8166  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 97.100  on 147  degrees of freedom
+## Residual deviance: 90.391  on 142  degrees of freedom
+## AIC: 102.39
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+<pre class="r"><code>exp(coef(logreg2))</code></pre>
+<pre><code>## (Intercept)       goodB   dealeryes    tradeyes       years    permonth 
+##    3.009695    1.655970    1.432535    2.015466    1.087908    0.992082</code></pre>
+<pre class="r"><code>prob2 &lt;- predict(logreg2, data = &quot;response&quot;)
+class_diagnostic(prob2, SportsCards$y)</code></pre>
+<pre><code>##         acc sens spec       ppv       auc
+## 1 0.8986486    1    0 0.8986486 0.6937343</code></pre>
+<pre class="r"><code>set.seed(1234)
+k = 10
+data &lt;- SportsCards[sample(nrow(SportsCards)), ]
+folds &lt;- cut(seq(1:nrow(SportsCards)), breaks = k, labels = FALSE)
+diags &lt;- NULL
+for (i in 1:k) {
+    train &lt;- data[folds != i, ]
+    test &lt;- data[folds == i, ]
+    truth2 &lt;- test$y
+    logreg3 &lt;- glm(y ~ good + dealer + trade + years + permonth, data = train,
+        family = &quot;binomial&quot;)
+    logreg3$xlevels[[&quot;dealer&quot;]] &lt;- union(logreg3$xlevels[[&quot;dealer&quot;]], levels(train$dealer))
+    logreg3$xlevels[[&quot;trade&quot;]] &lt;- union(logreg3$xlevels[[&quot;trade&quot;]], levels(train$trade))
+    logreg3$xlevels[[&quot;years&quot;]] &lt;- union(logreg3$xlevels[[&quot;years&quot;]], levels(train$years))
+    logreg3$xlevels[[&quot;permonth&quot;]] &lt;- union(logreg3$xlevels[[&quot;permonth&quot;]], levels(train$permonth))
+    prob3 &lt;- predict(logreg3, newdata = test, type = &quot;response&quot;)
+    diagnostics &lt;- rbind(diags, class_diagnostic(prob3, truth2))
+}
+summarize_all(diagnostics, mean)</code></pre>
+<pre><code>##         acc sens spec       ppv       auc
+## 1 0.8666667    1    0 0.8666667 0.4615385</code></pre>
+<pre class="r"><code>library(glmnet)</code></pre>
+<pre><code>## Loading required package: Matrix</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Matrix&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:tidyr&#39;:
+## 
+##     expand, pack, unpack</code></pre>
+<pre><code>## Loaded glmnet 4.0-2</code></pre>
+<pre class="r"><code>set.seed(1234)
+y &lt;- as.matrix(SportsCards$y)
+predictions &lt;- model.matrix(y ~ good + dealer + trade + years + permonth, data = SportsCards)[, -1]
+head(predictions)</code></pre>
+<pre><code>##   goodB dealeryes tradeyes years permonth
+## 1     1         1        1    12       70
+## 2     1         1        1     2       40
+## 3     1         1        0    10       35
+## 4     0         1        1     3       33
+## 5     0         1        0    10       32
+## 6     0         1        1    10       30</code></pre>
+<pre class="r"><code>cv &lt;- cv.glmnet(predictions, y, family = &quot;binomial&quot;)
+lasso_fit &lt;- glmnet(predictions, y, family = &quot;binomial&quot;, lambda = cv$lambda.1se)
+coef(lasso_fit)</code></pre>
+<pre><code>## 6 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
+##                   s0
+## (Intercept) 2.182299
+## goodB       0.000000
+## dealeryes   .       
+## tradeyes    .       
+## years       .       
+## permonth    .</code></pre>
+<pre class="r"><code>set.seed(1234)
+k = 10
+data &lt;- SportsCards[sample(nrow(SportsCards)), ]
+folds &lt;- cut(seq(1:nrow(SportsCards)), breaks = k, labels = FALSE)
+diags &lt;- NULL
+for (i in 1:k) {
+    train2 &lt;- data[folds != i, ]
+    test2 &lt;- data[folds == i, ]
+    truth2 &lt;- test2$y
+    logreg4 &lt;- glm(y ~ permonth, data = train2, 
+        family = &quot;binomial&quot;)
+    prob4 &lt;- predict(logreg4, newdata = test2, type = &quot;response&quot;)
+    diagnostics2 &lt;- rbind(diags, class_diagnostic(prob4, truth2))
+}
+summarize_all(diagnostics2, mean)</code></pre>
+<pre><code>##         acc sens spec       ppv       auc
+## 1 0.8666667    1    0 0.8666667 0.6153846</code></pre>
+<div id="now-we-conduct-a-logistic-model-using-all-of-the-variables-that-are-usable-in-the-dataset.-this-logistic-model-serves-to-determine-the-relationship-between-gender-and-the-good-dealer-trade-years-and-permonth-variables.-this-model-shows-that-none-of-the-variables-investigated-are-statistically-significant-determinants-of-gender.-for-this-new-model-with-all-of-the-usable-variables-the-accuracy-rate-is-0.8986-the-sensitivity-tpr-is-1-the-specificity-tnr-is-0-the-ppv-is-0.8986-and-the-auc-is-0.6937-meaning-this-model-serves-as-poor-in-terms-of-predicting-gender.-after-conducting-a-10-fold-cv-the-model-has-an-accuracy-rating-of-0.8667-a-sensitivity-tpr-of-1-a-specificity-tnr-of-0-a-ppv-of-0.8667-and-an-auc-of-0.4615-which-is-worse-than-bad-in-terms-of-predicting-gender.-finally-a-lasso-is-conducted-which-yields-a-model-with-the-same-characteristics-except-for-an-auc-of-0.6154.-the-auc-value-is-now-higher-than-the-10-fold-logistic-model-but-still-only-represents-a-poor-level-of-prediction-of-gender.-with-the-original-logistic-regression-model-having-the-highest-auc-at-0.6937-it-is-the-best-model-in-terms-of-predicting-gender-from-the-good-dealer-trade-years-and-permonth-variables.-however-this-auc-level-still-represented-a-poor-prediction-level-therefore-it-is-still-a-weak-model." class="section level6">
+<h6>Now, we conduct a logistic model using all of the variables that are usable in the dataset. This logistic model serves to determine the relationship between gender and the good, dealer, trade, years, and permonth variables. This model shows that none of the variables investigated are statistically significant determinants of gender. For this new model with all of the usable variables, the accuracy rate is 0.8986, the sensitivity (TPR) is 1, the specificity (TNR) is 0, the PPV is 0.8986, and the AUC is 0.6937, meaning this model serves as &quot;poor&quot; in terms of predicting gender. After conducting a 10 fold CV, the model has an accuracy rating of 0.8667, a sensitivity (TPR) of 1, a specificity (TNR) of 0, a PPV of 0.8667, and an AUC of 0.4615, which is worse than &quot;bad&quot; in terms of predicting gender. Finally, a LASSO is conducted, which yields a model with the same characteristics except for an AUC of 0.6154. The AUC value is now higher than the 10-fold logistic model, but still only represents a &quot;poor&quot; level of prediction of gender. With the original logistic regression model having the highest AUC at 0.6937, it is the best model in terms of predicting gender from the good, dealer, trade, years, and permonth variables. However, this AUC level still represented a &quot;poor&quot; prediction level, therefore it is still a weak model.</h6>
+</div>
+</div>
+
+            
+        <hr>         <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div> 
+            </div>
+          </div>
+
+   <hr>  <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div> 
+        </div>
+      </div>
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="../../js/docs.min.js"></script>
+<script src="../../js/main.js"></script>
+
+<script src="../../js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>

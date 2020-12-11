@@ -1,0 +1,158 @@
+---
+title: "Project1"
+author: "Fouad Debs, FAD426"
+date: "10/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Introduction
+
+#####With the NFL season in full swing, my obsession with fantasy football has never been stronger. In this project, I will look for any relationships between fantasy football performance and player total contract amount. My first dataset is titled "Football players salaries" and was found on Kaggle. This dataset includes details on NFL players' contracts, including total value, guaranteed money, salary, and player age. My second dataset is titled "Fantasy Football Stats and Season Leaders" and was provided by FantasyData. This dataset includes the top 300 offensive fantasy football players, with the various statistics accumulated during the 2018-2019 NFL Regular Season. I am interested to see if players who are among the highest paid in their positions produce accordingly in terms of fantasy football.
+
+#####To reduce cluttering of statistics between offensive positions, such as passing yards and touchdowns vs. receiving or rushing yards and touchdowns, I will select for only the fantasy relevant data. I also will select for only the total contract value in the salary dataset in order to avoid discrepancies in frontloaded or backloaded contracts. This should give a better overall result of any relationships between the above variables.
+
+
+```{r}
+library(readxl)
+library(tidyverse)
+
+#loading in two datasets
+Fantasy_Football_19_Offensive_Player_Stats <- read_excel("2019 Fantasy Football Offensive Player Stats.xlsx", n_max = 300)
+NFL_Salaries <- read_csv("football_salaries.csv")
+```
+##Tidying:Rearranging Wide/Long
+#####Because the two datasets were already tidy, I use the pivot_longer and pivot_wider functions while summarizing the data in the Wrangling section.
+
+##Joining/Merging
+
+```{r}
+library(dplyr)
+
+#filter the second dataset to only include offensive player positions because fantasy football statistics are mainly taken from offensive players
+NFL_Salaries <- NFL_Salaries %>% filter(position == "quarterback" | position == "running-back" | position == "wide-receiver" | position == "tight-end")
+
+#join two datasets using full_join
+joineddata <- full_join(Fantasy_Football_19_Offensive_Player_Stats, NFL_Salaries, by="player")
+joineddata <- joineddata %>% na.omit()
+joineddata <- joineddata %>% select(player, Pos, Gms, `Fantasy Points/Game`, `Total Fantasy Points`, total_value)
+
+#rename total_value variable to `Contract Value` so that I can pivot longer using "_" later
+joineddata <- joineddata %>% rename(`Contract Value` = total_value)
+```
+#####In order to combine the two datasets, I conducted a full_join using "player" as the common variable, resulting in joineddata. This dataset originally had 25 total variables, a lot of which I felt were unnecessary moving forward in the project. I omitted all data that had N/As associated, and then selected for player, Pos, Gms, Fantasy Points/Game, Total Fantasy Points, and total_value. These variables are the most important for the investigation of a potential relationship, and will allow the rest of the modeling to be better aesthetically. I then renamed total_value to Contract Value because I knew that I would be separating by "_" when tidying the data with pivot_longer and pivot_wider.
+
+##Wrangling
+```{r}
+library(knitr)
+
+#used mutate to generate an additional variable that is a function of another variable
+joineddata <- joineddata %>% mutate(`Projected Fantasy Points if Played All Games` = 16*`Fantasy Points/Game`)
+
+#summary of all data, including tidying
+joineddata %>% select(where(is.double)) %>% summarize_all(list(mean = mean, median = median, sd = sd, max = max, min = min), na.rm = T) %>% pivot_longer(contains("_")) %>% separate(name, sep = "_", into = c("variable", "stat")) %>% pivot_wider(names_from = "variable", values_from = "value") %>% arrange(stat)
+
+```
+
+```{r}
+#create a new categorical variable for splitting up contract classes
+joineddata$contract_cat[joineddata$`Contract Value` < 8000000] <- "low"
+joineddata$contract_cat[joineddata$`Contract Value` >= 8000000 & joineddata$`Contract Value` < 30000000] <- "medium"
+joineddata$contract_cat[joineddata$`Contract Value` >= 30000000] <- "high"
+
+#summary of data grouped by contract category classes low, medium, and high; includes tidying
+joineddata %>% group_by(contract_cat) %>% select(where(is.double)) %>% summarize_all(list(mean = mean, median = median, sd = sd, max = max, min = min), na.rm = T) %>% pivot_longer(c(-1), values_to = "values", names_to = "stat") %>% separate(stat, sep = "_", into = c("variable", "stat")) %>% pivot_wider(names_from = "variable", values_from = "values") %>% arrange(match(contract_cat, c("low", "medium", "high")))
+
+```
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+
+#create correlation matrix
+joineddata_num <- joineddata %>% column_to_rownames("player") %>% 
+    select_if(is.numeric)
+joineddatacorr <- cor(joineddata_num, use = "complete.obs")
+joineddatacorr
+```
+
+```{r}
+#tidy correlation matrix
+tidycorpivot <- joineddatacorr %>% as.data.frame %>% rownames_to_column("Variable1") %>% 
+    pivot_longer(-1, names_to = "Variable2", values_to = "Correlation")
+tidycorpivot
+```
+#####To start the data wrangling process, I created the new variable, `Projected Fantasy Points if Played All Games` using mutate. I did this by multiplying the `Fantasy Points/Game` variable by 16 to project how many total fantasy points players would end up with if they had played all 16 games and produced at their average fantasy points/game. After this, I found the mean, median, standard deviation, maximum, and minimum of all of the numeric variables using the sumarize_all function. I then tidied the datasets using pivot_longer and pivot_wider to demonstrate my use of these functions. There were many interesting summary statistics, including a player who played 17 games because of a trade after their bye week on their first team, but before the bye week on their second team. The `Projected Fantasy Points if Played All Games` corrected for this player, although they were not among the top fantasy producers. Another staggering statistic was the standard deviation for the contract value of 27185824; this is most likely due to differences between players with very large contracts contrasted with players with minimum contracts.
+
+#####To better evaluate the summary statistics, I then found the mean, median, standard deviation, maximum, and minimum of the numeric variables again, but grouped them by a new categorical variable, contract_cat. I created this variable to separate the players who were on minimum deals or their rookie contracts from the NFL's highest earners, using low for players making less than $8 million, medium for players making between $8 million and $30 million, and high for players making more than $30 million. I did this hoping it would provide some distinctions between the fantasy expectations of the different classes of contract values. The grouping did allow for the data to be interpreted easier, but the differences between the medium class (mean of 9.317 fantasy points/game) and the high class of contract values (mean of 10.797 fantasy points/game) was surprisingly low. This may be due to some higher paid players underperforming after getting their big payday, or could be attributed to medium-paid players playing harder in hopes of getting a pay raise. Finally, I created a correlation matrix, which showed that fantasy points/game and contract value were not actually highly correlated, as they had a coefficient of 0.46. The other fantasy point variables were similarly correlated with contract value. Games played and total fantasy points had surprisingly low correlation at a coefficient of approximately 0.318.
+
+
+##Visualization
+```{r}
+#create correlation heat map
+tidycorpivot %>% ggplot(aes(Variable1, Variable2, fill = Correlation)) + geom_tile() + scale_fill_gradient2(low = "white", mid = "yellow", high = "purple") + geom_text(aes(label = round(Correlation, 3)), color = "black", size = 2) + theme(axis.text.x = element_text(angle = 30, hjust = 1)) + coord_fixed() 
+```
+
+#####The correlation heatmap above serves as a visualization of the correlations between variables found in the data wrangling section. This heatmap highlights the two correlations I discussed above, and shows that the only high correlations that were found were the ones that essentially had to be high because they were related going in.
+
+```{r}
+#create scatterplot to investigate relationship between games played and total fantasy points, relating them to player contract value
+ggplot(joineddata, aes(Gms,`Total Fantasy Points`, color = `Contract Value`)) + geom_point(size=2) + scale_color_gradient(low = "yellow", high = "purple") + ggtitle("Games Played vs Total Fantasy Points, Colored by Contract Value") + xlab("Games Played") + ylab("Total Fantasy Points") + theme_dark()
+```
+
+#####My first plot is a scatterplot relating Games Played to Total Fantasy Points, colored by Contract Value. This scatterplot has an upwards sloping shape among the top data points, but there are so many data points in the bottom half of total fantasy points, that the correlation coefficient got dragged down. However, with the data points being colored by Contract Value, it can be distinguished that most of the purple dots, signifying larger contract values, were near the top of their respective games played x-axis values. The purple data points on the left side of the plot likely signify players who had season-ending injuries, and were not able to produce for a large portion of the NFL season. There were some yellow data points who performed very well, and these players are likely young players that had breakout seasons on their rookie contract deals.
+
+```{r}
+#create bar graph to display mean total fantasy points for each offensive position, related to contract value
+ggplot(joineddata, aes(x=Pos, y=`Total Fantasy Points`)) + geom_bar(stat = "summary", fun=mean) + geom_jitter(aes(color = `Contract Value`), size = 3) + xlab("Player Position") + scale_color_gradient(low = "yellow", high = "purple") + ggtitle("Mean Total Fantasy Points by Player Position, Colored by Contract Value") + theme_test()
+```
+
+#####My second plot is a bar graph of the Mean Total Fantasy Points split by Player Position, colored by Contract Value once again. This plot provides a clearer picture of the differences in fantasy production among the different offensive positions. The purple dots above the mean in the Quarterback position represent high-paid veterans who are producing above the average fantasy production level in their position. The few purple dots far below the mean were likely attributed to high-paid quarterbacks who missed a lot of their games. The Quarterback position also has the most variation of the four positions, including Lamar Jackson on his rookie deal nearly doubling the average fantasy point production. Overall, this plot shows that a majority of the higher paid players in their positions tend to perform better than the average fantasy output, meaning that they deserve their contract status. 
+
+##Dimensionality Reduction
+```{r}
+#cluster creation with goodness of fit
+library(cluster)
+
+cluster_data <- joineddata %>% select(Gms, `Fantasy Points/Game`, `Total Fantasy Points`, `Contract Value`, `Projected Fantasy Points if Played All Games`) %>% scale %>% as.data.frame
+
+sil_width <- vector()
+for (i in 2:10) {pam_fit <- pam(cluster_data, k = i) 
+sil_width[i] <- pam_fit$silinfo$avg.width}
+ggplot() + geom_line(aes(x = 1:10, y = sil_width)) + scale_x_continuous(name = "k", breaks = 1:10)
+```
+
+```{r}
+#cluster analysis table
+mypam <- cluster_data %>% pam(4)
+mypam
+```
+
+
+```{r}
+#average silhouette width
+mypam$silinfo$avg.width
+```
+
+
+```{r}
+#scatterplot showing cluster data
+cluster_data <- cluster_data %>% mutate(cluster = as.factor(mypam$clustering))
+ggplot(cluster_data, aes(x = `Contract Value`, y = `Fantasy Points/Game`, color = cluster)) + geom_point(size=2)
+```
+
+```{r}
+#summarize cluster data
+cluster_data %>% mutate(cluster = mypam$clustering) %>% group_by(cluster) %>% rename_all(function(x) str_replace(x, "_", "")) %>% summarize_if(is.numeric, .funs = list(mean = mean, median = median, sd = sd), na.rm = T)
+```
+
+```{r}
+#Visualization of all pairwise combinations
+library(GGally)
+ggpairs(cluster_data, aes(color = cluster))
+```
+
+#####I first initiated the clustering of my data using the numeric variables Gms, `Fantasy Points/Game`, `Total Fantasy Points`, `Contract Value`, `Projected Fantasy Points if Played All Games`. I then found the ideal number of clusters for maximizing my silhoutte width using the PAM clustering silhoutte method. The goodness of fit plot showed that the ideal number was 4, so I moved forward and produced a cluster analysis table. The average silhouette width of pam1 was calculated as approximately 0.385, which indicates that a weak structure was found and could be artificial, however because the goodness of fit plot showed that the ideal number was 4, I moved on. I then produced a scatterplot of the cluster data measuring Fantasy Points/Game against Contract Value. This showed the four clusters, with the red cluster being the most spread out but least voluminous. It also showed the purple cluster being clumped together in the bottom left corner, with the least variation among the four clusters. Afterwards, I printed the summary statistics (mean, median, and standard deviation) of the clusters. Cluster 1 had universally positive summary statistics, while cluster 3 had the most negative summary statistics. Finally, I created a visualization of all the numeric variable pairwise combinations. This showed correlations consistent with my correlation heat maps, and provided interesting plots.

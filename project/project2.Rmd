@@ -1,0 +1,251 @@
+---
+title: "Project2"
+author: "Fouad Debs, FAD426"
+date: "11/25/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Introduction
+
+#####As an avid sports fan, I was intrigued by this data set that collects data regarding whether or not ownership of a sports souvenir increases its value. The "good" variable represents which good the individual was given, whether it was good A or good B. Good A is a ticket stub from the game that Cal Ripken Jr. set the record for consecutive games played, while Good B was a souvenir from the game that Nolan Ryan won his 300th game. These two sports souvenirs had identical market value prior to this experiment. Each individual was then given the option to trade their good for the other good based on personal preference. This choice is shown by the "trade" variable. The "dealer" variable represents whether or not the individual is a sports card/souvenir dealer. The "permonth" variable represents the number of trades that the individual makes per month. The "years" variable represents the number of years the individual has been trading. The "income" variable represents the income class that an individual is in (in $1000). Obviously, the "gender" variable indicates gender, while the "age" variable indicates age. The "education" variable indicates the highest level of education that the individual has achieved. There are a total of 148 observations in the dataset.
+
+
+```{r}
+library(readxl)
+library(tidyverse)
+
+#loading in dataset
+SportsCards <- read_csv("SportsCards.csv")
+
+#Turn gender into a binary variable
+SportsCards <- SportsCards %>% mutate(y = ifelse(gender=="male", 1, 0))
+```
+
+##MANOVA Testing
+
+```{r}
+library(dplyr)
+
+library(rstatix)
+
+man1 <- manova(cbind(years, permonth)~trade, data=SportsCards)
+summary(man1)
+
+summary.aov(man1)
+
+SportsCards%>%group_by(trade)%>%summarize(mean(years),mean(permonth))
+
+pairwise.t.test(SportsCards$permonth, SportsCards$trade, p.adj = "none")
+
+#Finding probability of Type I Error
+1-(0.95)^5
+
+#Bonferroni correction
+(0.05/5)
+
+group <- SportsCards$trade 
+DVs <- SportsCards %>% select(years, permonth)
+
+#Test multivariate normality for each group (null: assumption met)
+sapply(split(DVs,group), mshapiro_test)
+
+#Box's M test (null: homogeneity of vcov mats assumption met)
+box_m(DVs, group)
+
+#Covariance matrices for each group
+lapply(split(DVs,group), cov)
+
+ggplot(SportsCards, aes(x = years, y = permonth)) +  geom_point(alpha = .5) + geom_density_2d(h=2) + coord_fixed() + facet_wrap(~trade)
+```
+
+######I conducted a MANOVA test to determine the relationship between the trade variable, which highlights whether or not an individual decided to trade their sports souvenir, and two numeric variables. The two numeric variables are years (years spent trading) and permonth (the number of trades an individual makes per month). With a p-value of 0.001136, the MANOVA test had at least one significant effect with one of the numeric variables. To discover which variable this was, I conducted univariate ANOVAs for years and permonth. The ANOVA for permonth was statistically significant as it had an F value of 14.057 and a p-value of 0.000255. Afterwards, I conducted a post-hoc t test to determine how the trade variable differed based on permonth (trades made per month). To calculate the Type I error and Bonferroni adjusted signficance level, I counted the number of tests conducted, which was 1 MANOVA, 2 ANOVAs, and 2 t tests. This breaks down to a total of 5 tests, which means the probability of a Type I error is 1-(0.95)^5 = 0.2262191. The Bonferroni adjusted significance level comes out to (0.05/5) = 0.01. Because the p-value in the post-hoc tests was significantly lower than the Bonferroni adjusted signficiance level, individuals who choose to trade and who choose not to trade are statistically different according to the individual's trades made per month. When assessing the assumptions of the MANOVA test, it is clear that the M Shapiro Test fails the multivariate normalility assumptions for both groups with two p-values that are significantly less than 0.05. The Box's M test also shows a failure of the homogeneity of vcov mats assumption to be met. The multivariate plots that are included further provide evidence of the failed assumptions.
+
+##Randomization Test
+
+```{r}
+SportsCards %>% group_by(dealer) %>% summarize(means = mean(permonth)) %>% summarize(diff(means))
+
+random_distribution <- vector() 
+for (i in 1:5000) {
+randomnew <- data.frame(permonth = sample(SportsCards$permonth), dealer = SportsCards$dealer) 
+random_distribution[i] <- mean(randomnew[randomnew$dealer == "yes", ]$permonth) - mean(randomnew[randomnew$dealer == "no", ]$permonth)
+}
+
+mean(random_distribution > 9.162162    | random_distribution < -9.162162)
+
+t.test(data = SportsCards, permonth ~ dealer)
+
+{
+  hist(random_distribution, main = "Histogram"); abline(v = c(-9.162162, 9.162162), col="purple")
+}
+```
+
+######A randomization test to determine whether or not an individual being a dealer effects the number of trades made per month is conducted and a difference of means of approximately 9.162 trades per month is found. This yields a p-value that is 0, which is evidently less than a significance level of 0.05. The Welch's t-test that is run confirms this result, as the p-value for that is essentially 0 as well. This means that there is a significant difference between the number of trades made per month between an individual that considers themselves a dealer and one that does not. With no purple lines on the histogram it is clear that the two are significantly different.
+
+##Linear Regression Model
+
+```{r}
+#load in libraries to try to fix knitting issues
+library(lmtest)
+library(tidyverse)
+library(sandwich)
+library(cluster)
+
+set.seed(348)
+
+#Centering around the mean in two numeric variables and conduct linear regression
+SportsCards$centeredyears <- (SportsCards$years - mean(SportsCards$years, na.rm = TRUE))
+SportsCards$centeredpermonth <- (SportsCards$permonth - mean(SportsCards$permonth, na.rm = TRUE))
+
+reg <- lm(centeredyears ~ centeredpermonth * trade, data = SportsCards)
+summary(reg)
+
+ggplot(SportsCards, aes(x = centeredyears, y = centeredpermonth, group = trade)) + geom_point(aes(color=trade)) + geom_smooth(method = "lm", aes(color = trade))
+
+#Check assumptions
+ggplot() + geom_point(aes(reg$fitted.values, reg$residuals)) + geom_hline(yintercept = 0, color = 'purple')
+
+bptest(reg)
+
+ks.test(reg$residuals, "pnorm", mean = 0, sd(reg$residuals))
+
+coeftest(reg, vcov = vcovHC(reg))
+
+summary(reg)
+```
+
+######A linear regression model was conducted using the numeric variables years and permonth, both centered around their respective means, along with the trade variable. Controlling for trade, centeredyears increases by 0.059916 with every increase of 1 unit in centeredpermonth (t-statistic = 0.6172, p-value = 0.538, not statistically significant). Controlling for centeredpermonth, individuals who chose to trade their sports souvenir have a centeredyears value that is approximately 0.700438 units lower than individuals who chose not to trade (t-statistic = 0.5624, p-value = 0.5747, not statistically significant). The slope for centeredpermonth on centeredyears is approximately 0.03321 units lower for individuals that chose to trade compared to those that chose not to trade (t-statistic = 0.2906, p-value = 0.7718, not statistically significant). Because all of the p-values are larger than a significance level of 0.05, the linearity, homoskedasticity, and normality assumptions can all be considered to be met. When redoing the linear regression model with the robust standard errors, the model is nearly identical, with p-values that are all still significantly greater than 0.05. The R-squared value of this second regression is 0.003573, which is the proportion of variation in the response variable explained by the linear model.
+
+##Bootstrapped Model
+
+```{r}
+set.seed(348)
+
+reg <- lm(centeredyears ~ centeredpermonth * trade, data = SportsCards)
+summary(reg)
+
+residuals <- reg$residuals
+fittedvals <- reg$fitted.values
+
+residual_replicate <- replicate(5000, {
+  newresiduals<-sample(residuals,replace=T)
+SportsCards$new_yvar<- fittedvals + newresiduals
+reg2 <- lm(new_yvar ~ centeredyears * trade, data=SportsCards)
+coef(reg2) 
+})
+
+residual_replicate %>% t %>% as.data.frame %>% summarize_all(sd)
+```
+
+######The standard errors for the bootstrapped model are different from the original standard errors and robust standard errors. The bootstrapped SE for centeredpermonth is approximately 0.0871, 1.4357 for tradeyes, and 0.2298 for the interaction between the two. The original standard error of centeredpermonth was 0.097, the original standard error of tradeyes was 1.245, and the original standard error of the interaction/slope was 0.114. Therefore, the bootstrapped model has a lower standard error for centeredpermonth and a higher standard error for tradeyes and for the interaction between the two.
+
+##Logistic Regression Model
+
+```{r}
+logreg <- glm(y ~ years + permonth, data = SportsCards, family = binomial(link = "logit"))
+coeftest(logreg)
+exp(coef(logreg))
+
+SportsCards <- SportsCards %>% mutate(prob = predict(logreg, type="response"), prediction=ifelse(prob>.5,1,0))
+classify <- SportsCards %>% transmute(prob, prediction, truth = y)
+table(prediction = classify$prediction, truth=classify$truth) %>% addmargins()
+
+
+probability = predict(reg, type = "response")
+class_diagnostic <- function(probs, truth) {
+    tab <- table(factor(probs > 0.5, levels = c("FALSE", "TRUE")), truth)
+    acc = sum(diag(tab))/sum(tab) 
+    sens = tab[2, 2]/colSums(tab)[2] 
+    spec = tab[1, 1]/colSums(tab)[1] 
+    ppv = tab[2, 2]/rowSums(tab)[2] 
+    if (is.numeric(truth) == FALSE & is.logical(truth) == FALSE)
+      truth <- as.numeric(truth) - 1
+    ord <- order(probs, decreasing = TRUE)
+    probs <- probs[ord]
+    truth <- truth[ord]
+    TPR = cumsum(truth)/max(1, sum(truth))
+    FPR = cumsum(!truth)/max(1, sum(!truth))
+    dup <- c(probs[-1] >= probs[-length(probs)], FALSE)
+    TPR <- c(0, TPR[!dup], 1)
+    FPR <- c(0, FPR[!dup], 1)
+    n <- length(TPR)
+    auc <- sum(((TPR[-1] + TPR[-n])/2) * (FPR[-1] - FPR[-n]))   
+    data.frame(acc, sens, spec, ppv, auc)
+}
+
+class_diagnostic(probability, SportsCards$y)
+
+
+SportsCards$logit<-predict(logreg,type="link")
+
+SportsCards$yfactor <- as.factor(SportsCards$y) 
+SportsCards %>% group_by(yfactor) %>% ggplot() + geom_density(aes(logit,color=yfactor,fill=yfactor))
+
+library(plotROC)
+ROCplot <- ggplot(SportsCards) + geom_roc(aes(d = y, m = prob), n.cuts = 0)
+ROCplot
+
+calc_auc(ROCplot)
+```
+######According to this logistic model, when controlling for permonth, with every 1 unit increase in years, the probabiltiy of the individual being male increases by a factor of approximately 1.104. When controlling for years, with every 1 unit increase in permonth, the probability of the individual being male increases by a factor of 1.011. The confusion matrix shows that the accuracy rating is 0.2297, which is the proportion of correct gender assignment for the individuals. The sensitivity (TPR) is 0.1504 (rate of true positives), the specificity (TNR) is 0.9333 (rate of true negatives), and the PPV is 0.9524 (the proportion of individuals classified as male that are actually male). With a calculated AUC value of 0.4386, but a AUC value of 0.6489 taken from the plot, it is likely that the predicting level of this model is to be considered "bad." The shape of the ROC plot does not look like the ideal right angle, which further suggests that the model is bad for prediction. This means that gender can not be accurately predicted by the years an individual has spent trading and the trades made per month.
+
+##Logistic Regression Using All Variables
+```{r}
+logreg2 <- glm(y ~ good+dealer+trade+years+permonth, data = SportsCards, family = binomial(link = "logit"))
+summary(logreg2)
+exp(coef(logreg2))
+
+prob2 <- predict(logreg2, data = "response")
+class_diagnostic(prob2, SportsCards$y)
+
+set.seed(1234)
+k = 10
+data <- SportsCards[sample(nrow(SportsCards)), ]
+folds <- cut(seq(1:nrow(SportsCards)), breaks = k, labels = FALSE)
+diags <- NULL
+for (i in 1:k) {
+    train <- data[folds != i, ]
+    test <- data[folds == i, ]
+    truth2 <- test$y
+    logreg3 <- glm(y ~ good + dealer + trade + years + permonth, data = train,
+        family = "binomial")
+    logreg3$xlevels[["dealer"]] <- union(logreg3$xlevels[["dealer"]], levels(train$dealer))
+    logreg3$xlevels[["trade"]] <- union(logreg3$xlevels[["trade"]], levels(train$trade))
+    logreg3$xlevels[["years"]] <- union(logreg3$xlevels[["years"]], levels(train$years))
+    logreg3$xlevels[["permonth"]] <- union(logreg3$xlevels[["permonth"]], levels(train$permonth))
+    prob3 <- predict(logreg3, newdata = test, type = "response")
+    diagnostics <- rbind(diags, class_diagnostic(prob3, truth2))
+}
+summarize_all(diagnostics, mean)
+
+library(glmnet)
+set.seed(1234)
+y <- as.matrix(SportsCards$y)
+predictions <- model.matrix(y ~ good + dealer + trade + years + permonth, data = SportsCards)[, -1]
+head(predictions)
+
+cv <- cv.glmnet(predictions, y, family = "binomial")
+lasso_fit <- glmnet(predictions, y, family = "binomial", lambda = cv$lambda.1se)
+coef(lasso_fit)
+
+set.seed(1234)
+k = 10
+data <- SportsCards[sample(nrow(SportsCards)), ]
+folds <- cut(seq(1:nrow(SportsCards)), breaks = k, labels = FALSE)
+diags <- NULL
+for (i in 1:k) {
+    train2 <- data[folds != i, ]
+    test2 <- data[folds == i, ]
+    truth2 <- test2$y
+    logreg4 <- glm(y ~ permonth, data = train2, 
+        family = "binomial")
+    prob4 <- predict(logreg4, newdata = test2, type = "response")
+    diagnostics2 <- rbind(diags, class_diagnostic(prob4, truth2))
+}
+summarize_all(diagnostics2, mean)
+```
+######Now, we conduct a logistic model using all of the variables that are usable in the dataset. This logistic model serves to determine the relationship between gender and the good, dealer, trade, years, and permonth variables. This model shows that none of the variables investigated are statistically significant determinants of gender. For this new model with all of the usable variables, the accuracy rate is 0.8986, the sensitivity (TPR) is 1, the specificity (TNR) is 0, the PPV is 0.8986, and the AUC is 0.6937, meaning this model serves as "poor" in terms of predicting gender. After conducting a 10 fold CV, the model has an accuracy rating of 0.8667, a sensitivity (TPR) of 1, a specificity (TNR) of 0, a PPV of 0.8667, and an AUC of 0.4615, which is worse than "bad" in terms of predicting gender. Finally, a LASSO is conducted, which yields a model with the same characteristics except for an AUC of 0.6154. The AUC value is now higher than the 10-fold logistic model, but still only represents a "poor" level of prediction of gender. With the original logistic regression model having the highest AUC at 0.6937, it is the best model in terms of predicting gender from the good, dealer, trade, years, and permonth variables. However, this AUC level still represented a "poor" prediction level, therefore it is still a weak model.

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Fouad Debs</title>
+    <link>/</link>
+    <description>Recent content on Fouad Debs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-US</language>
+    <lastBuildDate>Fri, 11 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>TestBlogPostFD</title>
+      <link>/post/2020/12/11/testblogpostfd/</link>
+      <pubDate>Fri, 11 Dec 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2020/12/11/testblogpostfd/</guid>
+      <description>Link to project 1
+Link to project 2
+Link to google</description>
+    </item>
+    
+    <item>
+      <title>Project1</title>
+      <link>/project/project1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/project/project1/</guid>
+      <description>Introduction With the NFL season in full swing, my obsession with fantasy football has never been stronger. In this project, I will look for any relationships between fantasy football performance and player total contract amount. My first dataset is titled &amp;quot;Football players salaries&amp;quot; and was found on Kaggle. This dataset includes details on NFL players&#39; contracts, including total value, guaranteed money, salary, and player age. My second dataset is titled &amp;quot;Fantasy Football Stats and Season Leaders&amp;quot; and was provided by FantasyData.</description>
+    </item>
+    
+    <item>
+      <title>Project2</title>
+      <link>/project/project2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/project/project2/</guid>
+      <description>Introduction As an avid sports fan, I was intrigued by this data set that collects data regarding whether or not ownership of a sports souvenir increases its value. The &amp;quot;good&amp;quot; variable represents which good the individual was given, whether it was good A or good B. Good A is a ticket stub from the game that Cal Ripken Jr. set the record for consecutive games played, while Good B was a souvenir from the game that Nolan Ryan won his 300th game.</description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>/projects/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/projects/</guid>
+      <description> Check out some of my coding projects below:
+ Wrangling &amp;amp; Exploratory Data Analysis
+ Modeling, Inference, Prediction
+  -- </description>
+    </item>
+    
+    <item>
+      <title>Resume</title>
+      <link>/resume/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/resume/</guid>
+      <description>    </description>
+    </item>
+    
+  </channel>
+</rss>

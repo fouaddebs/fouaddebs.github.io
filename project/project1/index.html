@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Fouad Debs" />
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../../img/favicon.ico">
+    <title>Project1</title>
+    <meta name="generator" content="Hugo 0.79.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,200bold,400old" />
+    
+    <!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+    
+  </head>
+
+  <body>
+    <div id="wrap">
+      
+      <nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="../../"><i class="fa fa-home"></i></a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar">
+      <ul class="nav navbar-nav navbar-right">
+      
+        
+        <li><a href="../../post/">BLOG</a></li>
+        
+        <li><a href="../../projects/">PROJECTS</a></li>
+        
+        <li><a href="../../resume/">RESUME</a></li>
+        
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+
+      <div class="container">
+        <div class="blog-post">
+          <h3>
+            <strong><a href="../../project/project1/">Project1</a></strong>
+          </h3>
+        </div>
+ 
+<div class="blog-title">
+          <h4>
+         January 1, 0001 
+            &nbsp;&nbsp;
+            
+          </h4>
+        </div>
+
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="blogpost">
+              
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<div id="with-the-nfl-season-in-full-swing-my-obsession-with-fantasy-football-has-never-been-stronger.-in-this-project-i-will-look-for-any-relationships-between-fantasy-football-performance-and-player-total-contract-amount.-my-first-dataset-is-titled-football-players-salaries-and-was-found-on-kaggle.-this-dataset-includes-details-on-nfl-players-contracts-including-total-value-guaranteed-money-salary-and-player-age.-my-second-dataset-is-titled-fantasy-football-stats-and-season-leaders-and-was-provided-by-fantasydata.-this-dataset-includes-the-top-300-offensive-fantasy-football-players-with-the-various-statistics-accumulated-during-the-2018-2019-nfl-regular-season.-i-am-interested-to-see-if-players-who-are-among-the-highest-paid-in-their-positions-produce-accordingly-in-terms-of-fantasy-football." class="section level5">
+<h5>With the NFL season in full swing, my obsession with fantasy football has never been stronger. In this project, I will look for any relationships between fantasy football performance and player total contract amount. My first dataset is titled &quot;Football players salaries&quot; and was found on Kaggle. This dataset includes details on NFL players' contracts, including total value, guaranteed money, salary, and player age. My second dataset is titled &quot;Fantasy Football Stats and Season Leaders&quot; and was provided by FantasyData. This dataset includes the top 300 offensive fantasy football players, with the various statistics accumulated during the 2018-2019 NFL Regular Season. I am interested to see if players who are among the highest paid in their positions produce accordingly in terms of fantasy football.</h5>
+</div>
+<div id="to-reduce-cluttering-of-statistics-between-offensive-positions-such-as-passing-yards-and-touchdowns-vs.-receiving-or-rushing-yards-and-touchdowns-i-will-select-for-only-the-fantasy-relevant-data.-i-also-will-select-for-only-the-total-contract-value-in-the-salary-dataset-in-order-to-avoid-discrepancies-in-frontloaded-or-backloaded-contracts.-this-should-give-a-better-overall-result-of-any-relationships-between-the-above-variables." class="section level5">
+<h5>To reduce cluttering of statistics between offensive positions, such as passing yards and touchdowns vs. receiving or rushing yards and touchdowns, I will select for only the fantasy relevant data. I also will select for only the total contract value in the salary dataset in order to avoid discrepancies in frontloaded or backloaded contracts. This should give a better overall result of any relationships between the above variables.</h5>
+<pre class="r"><code>library(readxl)
+library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+## ✓ tibble  3.0.3     ✓ dplyr   1.0.1
+## ✓ tidyr   1.1.1     ✓ stringr 1.4.0
+## ✓ readr   1.3.1     ✓ forcats 0.5.0</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>#loading in two datasets
+Fantasy_Football_19_Offensive_Player_Stats &lt;- read_excel(&quot;2019 Fantasy Football Offensive Player Stats.xlsx&quot;, n_max = 300)
+NFL_Salaries &lt;- read_csv(&quot;football_salaries.csv&quot;)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   position = col_character(),
+##   player = col_character(),
+##   team = col_character(),
+##   age = col_double(),
+##   total_value = col_double(),
+##   avg_year = col_double(),
+##   total_guaranteed = col_double(),
+##   fully_guaranteed = col_double(),
+##   free_agency = col_character()
+## )</code></pre>
+</div>
+</div>
+<div id="tidyingrearranging-widelong" class="section level2">
+<h2>Tidying:Rearranging Wide/Long</h2>
+<div id="because-the-two-datasets-were-already-tidy-i-use-the-pivot_longer-and-pivot_wider-functions-while-summarizing-the-data-in-the-wrangling-section." class="section level5">
+<h5>Because the two datasets were already tidy, I use the pivot_longer and pivot_wider functions while summarizing the data in the Wrangling section.</h5>
+</div>
+</div>
+<div id="joiningmerging" class="section level2">
+<h2>Joining/Merging</h2>
+<pre class="r"><code>library(dplyr)
+
+#filter the second dataset to only include offensive player positions because fantasy football statistics are mainly taken from offensive players
+NFL_Salaries &lt;- NFL_Salaries %&gt;% filter(position == &quot;quarterback&quot; | position == &quot;running-back&quot; | position == &quot;wide-receiver&quot; | position == &quot;tight-end&quot;)
+
+#join two datasets using full_join
+joineddata &lt;- full_join(Fantasy_Football_19_Offensive_Player_Stats, NFL_Salaries, by=&quot;player&quot;)
+joineddata &lt;- joineddata %&gt;% na.omit()
+joineddata &lt;- joineddata %&gt;% select(player, Pos, Gms, `Fantasy Points/Game`, `Total Fantasy Points`, total_value)
+
+#rename total_value variable to `Contract Value` so that I can pivot longer using &quot;_&quot; later
+joineddata &lt;- joineddata %&gt;% rename(`Contract Value` = total_value)</code></pre>
+<div id="in-order-to-combine-the-two-datasets-i-conducted-a-full_join-using-player-as-the-common-variable-resulting-in-joineddata.-this-dataset-originally-had-25-total-variables-a-lot-of-which-i-felt-were-unnecessary-moving-forward-in-the-project.-i-omitted-all-data-that-had-nas-associated-and-then-selected-for-player-pos-gms-fantasy-pointsgame-total-fantasy-points-and-total_value.-these-variables-are-the-most-important-for-the-investigation-of-a-potential-relationship-and-will-allow-the-rest-of-the-modeling-to-be-better-aesthetically.-i-then-renamed-total_value-to-contract-value-because-i-knew-that-i-would-be-separating-by-_-when-tidying-the-data-with-pivot_longer-and-pivot_wider." class="section level5">
+<h5>In order to combine the two datasets, I conducted a full_join using &quot;player&quot; as the common variable, resulting in joineddata. This dataset originally had 25 total variables, a lot of which I felt were unnecessary moving forward in the project. I omitted all data that had N/As associated, and then selected for player, Pos, Gms, Fantasy Points/Game, Total Fantasy Points, and total_value. These variables are the most important for the investigation of a potential relationship, and will allow the rest of the modeling to be better aesthetically. I then renamed total_value to Contract Value because I knew that I would be separating by &quot;_&quot; when tidying the data with pivot_longer and pivot_wider.</h5>
+</div>
+</div>
+<div id="wrangling" class="section level2">
+<h2>Wrangling</h2>
+<pre class="r"><code>library(knitr)
+
+#used mutate to generate an additional variable that is a function of another variable
+joineddata &lt;- joineddata %&gt;% mutate(`Projected Fantasy Points if Played All Games` = 16*`Fantasy Points/Game`)
+
+#summary of all data, including tidying
+joineddata %&gt;% select(where(is.double)) %&gt;% summarize_all(list(mean = mean, median = median, sd = sd, max = max, min = min), na.rm = T) %&gt;% pivot_longer(contains(&quot;_&quot;)) %&gt;% separate(name, sep = &quot;_&quot;, into = c(&quot;variable&quot;, &quot;stat&quot;)) %&gt;% pivot_wider(names_from = &quot;variable&quot;, values_from = &quot;value&quot;) %&gt;% arrange(stat)</code></pre>
+<pre><code>## # A tibble: 5 x 6
+##   stat    Gms `Fantasy Points… `Total Fantasy … `Contract Value`
+##   &lt;chr&gt; &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+## 1 max   17               27.7             416.        150000000 
+## 2 mean  13.7              7.56            103.         16730950.
+## 3 medi… 15                6.35             77.7         4612435 
+## 4 min    3                1.7              25.5          495000 
+## 5 sd     2.94             4.87             75.0        27185824.
+## # … with 1 more variable: `Projected Fantasy Points if Played All Games` &lt;dbl&gt;</code></pre>
+<pre class="r"><code>#create a new categorical variable for splitting up contract classes
+joineddata$contract_cat[joineddata$`Contract Value` &lt; 8000000] &lt;- &quot;low&quot;</code></pre>
+<pre><code>## Warning: Unknown or uninitialised column: `contract_cat`.</code></pre>
+<pre class="r"><code>joineddata$contract_cat[joineddata$`Contract Value` &gt;= 8000000 &amp; joineddata$`Contract Value` &lt; 30000000] &lt;- &quot;medium&quot;
+joineddata$contract_cat[joineddata$`Contract Value` &gt;= 30000000] &lt;- &quot;high&quot;
+
+#summary of data grouped by contract category classes low, medium, and high; includes tidying
+joineddata %&gt;% group_by(contract_cat) %&gt;% select(where(is.double)) %&gt;% summarize_all(list(mean = mean, median = median, sd = sd, max = max, min = min), na.rm = T) %&gt;% pivot_longer(c(-1), values_to = &quot;values&quot;, names_to = &quot;stat&quot;) %&gt;% separate(stat, sep = &quot;_&quot;, into = c(&quot;variable&quot;, &quot;stat&quot;)) %&gt;% pivot_wider(names_from = &quot;variable&quot;, values_from = &quot;values&quot;) %&gt;% arrange(match(contract_cat, c(&quot;low&quot;, &quot;medium&quot;, &quot;high&quot;)))</code></pre>
+<pre><code>## Adding missing grouping variables: `contract_cat`</code></pre>
+<pre><code>## # A tibble: 15 x 7
+##    contract_cat stat    Gms `Fantasy Points… `Total Fantasy … `Contract Value`
+##    &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+##  1 low          mean  13.6              6.05             80.4         3139968.
+##  2 low          medi… 15                5                61.9         2920860 
+##  3 low          sd     2.93             3.69             53.2         1777055.
+##  4 low          max   16               18.7             277.          7697356 
+##  5 low          min    3                1.7              25.5          495000 
+##  6 medium       mean  14                9.32            134.         16905300.
+##  7 medium       medi… 15                7.8             115.         15555000 
+##  8 medium       sd     2.86             5.94             94.9         6587027.
+##  9 medium       max   16               27.7             416.         29032436 
+## 10 medium       min    3                2.4              26           8650000 
+## 11 high         mean  13.6             10.8             148.         65368261.
+## 12 high         medi… 15                9.9             139.         50000000 
+## 13 high         sd     3.15             4.95             82.3        35132793.
+## 14 high         max   17               20.5             329.        150000000 
+## 15 high         min    4                3.2              36.5        30000000 
+## # … with 1 more variable: `Projected Fantasy Points if Played All Games` &lt;dbl&gt;</code></pre>
+<pre class="r"><code>library(tidyverse)
+library(ggplot2)
+
+#create correlation matrix
+joineddata_num &lt;- joineddata %&gt;% column_to_rownames(&quot;player&quot;) %&gt;% 
+    select_if(is.numeric)
+joineddatacorr &lt;- cor(joineddata_num, use = &quot;complete.obs&quot;)
+joineddatacorr</code></pre>
+<pre><code>##                                                     Gms Fantasy Points/Game
+## Gms                                          1.00000000          0.01052317
+## Fantasy Points/Game                          0.01052317          1.00000000
+## Total Fantasy Points                         0.31769371          0.94104499
+## Contract Value                               0.02236749          0.46098197
+## Projected Fantasy Points if Played All Games 0.01052317          1.00000000
+##                                              Total Fantasy Points
+## Gms                                                     0.3176937
+## Fantasy Points/Game                                     0.9410450
+## Total Fantasy Points                                    1.0000000
+## Contract Value                                          0.4411567
+## Projected Fantasy Points if Played All Games            0.9410450
+##                                              Contract Value
+## Gms                                              0.02236749
+## Fantasy Points/Game                              0.46098197
+## Total Fantasy Points                             0.44115667
+## Contract Value                                   1.00000000
+## Projected Fantasy Points if Played All Games     0.46098197
+##                                              Projected Fantasy Points if Played All Games
+## Gms                                                                            0.01052317
+## Fantasy Points/Game                                                            1.00000000
+## Total Fantasy Points                                                           0.94104499
+## Contract Value                                                                 0.46098197
+## Projected Fantasy Points if Played All Games                                   1.00000000</code></pre>
+<pre class="r"><code>#tidy correlation matrix
+tidycorpivot &lt;- joineddatacorr %&gt;% as.data.frame %&gt;% rownames_to_column(&quot;Variable1&quot;) %&gt;% 
+    pivot_longer(-1, names_to = &quot;Variable2&quot;, values_to = &quot;Correlation&quot;)
+tidycorpivot</code></pre>
+<pre><code>## # A tibble: 25 x 3
+##    Variable1           Variable2                                    Correlation
+##    &lt;chr&gt;               &lt;chr&gt;                                              &lt;dbl&gt;
+##  1 Gms                 Gms                                               1     
+##  2 Gms                 Fantasy Points/Game                               0.0105
+##  3 Gms                 Total Fantasy Points                              0.318 
+##  4 Gms                 Contract Value                                    0.0224
+##  5 Gms                 Projected Fantasy Points if Played All Games      0.0105
+##  6 Fantasy Points/Game Gms                                               0.0105
+##  7 Fantasy Points/Game Fantasy Points/Game                               1     
+##  8 Fantasy Points/Game Total Fantasy Points                              0.941 
+##  9 Fantasy Points/Game Contract Value                                    0.461 
+## 10 Fantasy Points/Game Projected Fantasy Points if Played All Games      1     
+## # … with 15 more rows</code></pre>
+<div id="to-start-the-data-wrangling-process-i-created-the-new-variable-projected-fantasy-points-if-played-all-games-using-mutate.-i-did-this-by-multiplying-the-fantasy-pointsgame-variable-by-16-to-project-how-many-total-fantasy-points-players-would-end-up-with-if-they-had-played-all-16-games-and-produced-at-their-average-fantasy-pointsgame.-after-this-i-found-the-mean-median-standard-deviation-maximum-and-minimum-of-all-of-the-numeric-variables-using-the-sumarize_all-function.-i-then-tidied-the-datasets-using-pivot_longer-and-pivot_wider-to-demonstrate-my-use-of-these-functions.-there-were-many-interesting-summary-statistics-including-a-player-who-played-17-games-because-of-a-trade-after-their-bye-week-on-their-first-team-but-before-the-bye-week-on-their-second-team.-the-projected-fantasy-points-if-played-all-games-corrected-for-this-player-although-they-were-not-among-the-top-fantasy-producers.-another-staggering-statistic-was-the-standard-deviation-for-the-contract-value-of-27185824-this-is-most-likely-due-to-differences-between-players-with-very-large-contracts-contrasted-with-players-with-minimum-contracts." class="section level5">
+<h5>To start the data wrangling process, I created the new variable, <code>Projected Fantasy Points if Played All Games</code> using mutate. I did this by multiplying the <code>Fantasy Points/Game</code> variable by 16 to project how many total fantasy points players would end up with if they had played all 16 games and produced at their average fantasy points/game. After this, I found the mean, median, standard deviation, maximum, and minimum of all of the numeric variables using the sumarize_all function. I then tidied the datasets using pivot_longer and pivot_wider to demonstrate my use of these functions. There were many interesting summary statistics, including a player who played 17 games because of a trade after their bye week on their first team, but before the bye week on their second team. The <code>Projected Fantasy Points if Played All Games</code> corrected for this player, although they were not among the top fantasy producers. Another staggering statistic was the standard deviation for the contract value of 27185824; this is most likely due to differences between players with very large contracts contrasted with players with minimum contracts.</h5>
+</div>
+<div id="to-better-evaluate-the-summary-statistics-i-then-found-the-mean-median-standard-deviation-maximum-and-minimum-of-the-numeric-variables-again-but-grouped-them-by-a-new-categorical-variable-contract_cat.-i-created-this-variable-to-separate-the-players-who-were-on-minimum-deals-or-their-rookie-contracts-from-the-nfls-highest-earners-using-low-for-players-making-less-than-8-million-medium-for-players-making-between-8-million-and-30-million-and-high-for-players-making-more-than-30-million.-i-did-this-hoping-it-would-provide-some-distinctions-between-the-fantasy-expectations-of-the-different-classes-of-contract-values.-the-grouping-did-allow-for-the-data-to-be-interpreted-easier-but-the-differences-between-the-medium-class-mean-of-9.317-fantasy-pointsgame-and-the-high-class-of-contract-values-mean-of-10.797-fantasy-pointsgame-was-surprisingly-low.-this-may-be-due-to-some-higher-paid-players-underperforming-after-getting-their-big-payday-or-could-be-attributed-to-medium-paid-players-playing-harder-in-hopes-of-getting-a-pay-raise.-finally-i-created-a-correlation-matrix-which-showed-that-fantasy-pointsgame-and-contract-value-were-not-actually-highly-correlated-as-they-had-a-coefficient-of-0.46.-the-other-fantasy-point-variables-were-similarly-correlated-with-contract-value.-games-played-and-total-fantasy-points-had-surprisingly-low-correlation-at-a-coefficient-of-approximately-0.318." class="section level5">
+<h5>To better evaluate the summary statistics, I then found the mean, median, standard deviation, maximum, and minimum of the numeric variables again, but grouped them by a new categorical variable, contract_cat. I created this variable to separate the players who were on minimum deals or their rookie contracts from the NFL's highest earners, using low for players making less than $8 million, medium for players making between $8 million and $30 million, and high for players making more than $30 million. I did this hoping it would provide some distinctions between the fantasy expectations of the different classes of contract values. The grouping did allow for the data to be interpreted easier, but the differences between the medium class (mean of 9.317 fantasy points/game) and the high class of contract values (mean of 10.797 fantasy points/game) was surprisingly low. This may be due to some higher paid players underperforming after getting their big payday, or could be attributed to medium-paid players playing harder in hopes of getting a pay raise. Finally, I created a correlation matrix, which showed that fantasy points/game and contract value were not actually highly correlated, as they had a coefficient of 0.46. The other fantasy point variables were similarly correlated with contract value. Games played and total fantasy points had surprisingly low correlation at a coefficient of approximately 0.318.</h5>
+</div>
+</div>
+<div id="visualization" class="section level2">
+<h2>Visualization</h2>
+<pre class="r"><code>#create correlation heat map
+tidycorpivot %&gt;% ggplot(aes(Variable1, Variable2, fill = Correlation)) + geom_tile() + scale_fill_gradient2(low = &quot;white&quot;, mid = &quot;yellow&quot;, high = &quot;purple&quot;) + geom_text(aes(label = round(Correlation, 3)), color = &quot;black&quot;, size = 2) + theme(axis.text.x = element_text(angle = 30, hjust = 1)) + coord_fixed() </code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<div id="the-correlation-heatmap-above-serves-as-a-visualization-of-the-correlations-between-variables-found-in-the-data-wrangling-section.-this-heatmap-highlights-the-two-correlations-i-discussed-above-and-shows-that-the-only-high-correlations-that-were-found-were-the-ones-that-essentially-had-to-be-high-because-they-were-related-going-in." class="section level5">
+<h5>The correlation heatmap above serves as a visualization of the correlations between variables found in the data wrangling section. This heatmap highlights the two correlations I discussed above, and shows that the only high correlations that were found were the ones that essentially had to be high because they were related going in.</h5>
+<pre class="r"><code>#create scatterplot to investigate relationship between games played and total fantasy points, relating them to player contract value
+ggplot(joineddata, aes(Gms,`Total Fantasy Points`, color = `Contract Value`)) + geom_point(size=2) + scale_color_gradient(low = &quot;yellow&quot;, high = &quot;purple&quot;) + ggtitle(&quot;Games Played vs Total Fantasy Points, Colored by Contract Value&quot;) + xlab(&quot;Games Played&quot;) + ylab(&quot;Total Fantasy Points&quot;) + theme_dark()</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="my-first-plot-is-a-scatterplot-relating-games-played-to-total-fantasy-points-colored-by-contract-value.-this-scatterplot-has-an-upwards-sloping-shape-among-the-top-data-points-but-there-are-so-many-data-points-in-the-bottom-half-of-total-fantasy-points-that-the-correlation-coefficient-got-dragged-down.-however-with-the-data-points-being-colored-by-contract-value-it-can-be-distinguished-that-most-of-the-purple-dots-signifying-larger-contract-values-were-near-the-top-of-their-respective-games-played-x-axis-values.-the-purple-data-points-on-the-left-side-of-the-plot-likely-signify-players-who-had-season-ending-injuries-and-were-not-able-to-produce-for-a-large-portion-of-the-nfl-season.-there-were-some-yellow-data-points-who-performed-very-well-and-these-players-are-likely-young-players-that-had-breakout-seasons-on-their-rookie-contract-deals." class="section level5">
+<h5>My first plot is a scatterplot relating Games Played to Total Fantasy Points, colored by Contract Value. This scatterplot has an upwards sloping shape among the top data points, but there are so many data points in the bottom half of total fantasy points, that the correlation coefficient got dragged down. However, with the data points being colored by Contract Value, it can be distinguished that most of the purple dots, signifying larger contract values, were near the top of their respective games played x-axis values. The purple data points on the left side of the plot likely signify players who had season-ending injuries, and were not able to produce for a large portion of the NFL season. There were some yellow data points who performed very well, and these players are likely young players that had breakout seasons on their rookie contract deals.</h5>
+<pre class="r"><code>#create bar graph to display mean total fantasy points for each offensive position, related to contract value
+ggplot(joineddata, aes(x=Pos, y=`Total Fantasy Points`)) + geom_bar(stat = &quot;summary&quot;, fun=mean) + geom_jitter(aes(color = `Contract Value`), size = 3) + xlab(&quot;Player Position&quot;) + scale_color_gradient(low = &quot;yellow&quot;, high = &quot;purple&quot;) + ggtitle(&quot;Mean Total Fantasy Points by Player Position, Colored by Contract Value&quot;) + theme_test()</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+<div id="my-second-plot-is-a-bar-graph-of-the-mean-total-fantasy-points-split-by-player-position-colored-by-contract-value-once-again.-this-plot-provides-a-clearer-picture-of-the-differences-in-fantasy-production-among-the-different-offensive-positions.-the-purple-dots-above-the-mean-in-the-quarterback-position-represent-high-paid-veterans-who-are-producing-above-the-average-fantasy-production-level-in-their-position.-the-few-purple-dots-far-below-the-mean-were-likely-attributed-to-high-paid-quarterbacks-who-missed-a-lot-of-their-games.-the-quarterback-position-also-has-the-most-variation-of-the-four-positions-including-lamar-jackson-on-his-rookie-deal-nearly-doubling-the-average-fantasy-point-production.-overall-this-plot-shows-that-a-majority-of-the-higher-paid-players-in-their-positions-tend-to-perform-better-than-the-average-fantasy-output-meaning-that-they-deserve-their-contract-status." class="section level5">
+<h5>My second plot is a bar graph of the Mean Total Fantasy Points split by Player Position, colored by Contract Value once again. This plot provides a clearer picture of the differences in fantasy production among the different offensive positions. The purple dots above the mean in the Quarterback position represent high-paid veterans who are producing above the average fantasy production level in their position. The few purple dots far below the mean were likely attributed to high-paid quarterbacks who missed a lot of their games. The Quarterback position also has the most variation of the four positions, including Lamar Jackson on his rookie deal nearly doubling the average fantasy point production. Overall, this plot shows that a majority of the higher paid players in their positions tend to perform better than the average fantasy output, meaning that they deserve their contract status.</h5>
+</div>
+</div>
+<div id="dimensionality-reduction" class="section level2">
+<h2>Dimensionality Reduction</h2>
+<pre class="r"><code>#cluster creation with goodness of fit
+library(cluster)
+
+cluster_data &lt;- joineddata %&gt;% select(Gms, `Fantasy Points/Game`, `Total Fantasy Points`, `Contract Value`, `Projected Fantasy Points if Played All Games`) %&gt;% scale %&gt;% as.data.frame
+
+sil_width &lt;- vector()
+for (i in 2:10) {pam_fit &lt;- pam(cluster_data, k = i) 
+sil_width[i] &lt;- pam_fit$silinfo$avg.width}
+ggplot() + geom_line(aes(x = 1:10, y = sil_width)) + scale_x_continuous(name = &quot;k&quot;, breaks = 1:10)</code></pre>
+<pre><code>## Warning: Removed 1 row(s) containing missing values (geom_path).</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>#cluster analysis table
+mypam &lt;- cluster_data %&gt;% pam(4)
+mypam</code></pre>
+<pre><code>## Medoids:
+##       ID        Gms Fantasy Points/Game Total Fantasy Points Contract Value
+## [1,]  13  0.7958855           1.8348484            2.1363008      0.8927097
+## [2,]  65  0.4561399           0.1931469            0.3305763     -0.1740227
+## [3,] 165 -1.5823336          -0.5250975           -0.7810078     -0.5153768
+## [4,] 170  0.4561399          -0.9765654           -0.8196600     -0.4793289
+##      Projected Fantasy Points if Played All Games
+## [1,]                                    1.8348484
+## [2,]                                    0.1931469
+## [3,]                                   -0.5250975
+## [4,]                                   -0.9765654
+## Clustering vector:
+##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 2 2 2 2 2 2 1 2 2 2 2
+##  [38] 2 1 2 1 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+##  [75] 2 2 2 2 2 2 2 2 3 2 2 2 2 2 2 2 2 2 2 2 3 2 4 4 4 4 3 2 3 2 4 4 2 4 4 4 2
+## [112] 4 3 4 4 4 3 4 4 3 4 4 4 4 4 3 3 4 4 4 3 3 4 4 4 3 4 3 4 3 4 3 4 3 4 3 3 4
+## [149] 3 3 3 4 4 4 3 3 4 4 4 4 4 4 4 4 3 4 4 4 4 4 4 4 4 4 4 4 3 3 4 4 4 3 3 4 4
+## [186] 3 4 4 4 4 3 4 3 3 3 3 4 3 4 4 4 4 4 4 4 4 4 3 4 4 3 4 3 4 4 3
+## Objective function:
+##    build     swap 
+## 1.079184 1.034732 
+## 
+## Available components:
+##  [1] &quot;medoids&quot;    &quot;id.med&quot;     &quot;clustering&quot; &quot;objective&quot;  &quot;isolation&quot; 
+##  [6] &quot;clusinfo&quot;   &quot;silinfo&quot;    &quot;diss&quot;       &quot;call&quot;       &quot;data&quot;</code></pre>
+<pre class="r"><code>#average silhouette width
+mypam$silinfo$avg.width</code></pre>
+<pre><code>## [1] 0.3845938</code></pre>
+<pre class="r"><code>#scatterplot showing cluster data
+cluster_data &lt;- cluster_data %&gt;% mutate(cluster = as.factor(mypam$clustering))
+ggplot(cluster_data, aes(x = `Contract Value`, y = `Fantasy Points/Game`, color = cluster)) + geom_point(size=2)</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>#summarize cluster data
+cluster_data %&gt;% mutate(cluster = mypam$clustering) %&gt;% group_by(cluster) %&gt;% rename_all(function(x) str_replace(x, &quot;_&quot;, &quot;&quot;)) %&gt;% summarize_if(is.numeric, .funs = list(mean = mean, median = median, sd = sd), na.rm = T)</code></pre>
+<pre><code>## # A tibble: 4 x 16
+##   cluster Gms_mean `Fantasy Points… `Total Fantasy … `Contract Value…
+##     &lt;int&gt;    &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+## 1       1    0.444            1.94             2.01            1.36  
+## 2       2    0.289            0.299            0.355          -0.0928
+## 3       3   -1.75            -0.228           -0.694          -0.109 
+## 4       4    0.448           -0.859           -0.704          -0.366 
+## # … with 11 more variables: `Projected Fantasy Points if Played All
+## #   Games_mean` &lt;dbl&gt;, Gms_median &lt;dbl&gt;, `Fantasy Points/Game_median` &lt;dbl&gt;,
+## #   `Total Fantasy Points_median` &lt;dbl&gt;, `Contract Value_median` &lt;dbl&gt;,
+## #   `Projected Fantasy Points if Played All Games_median` &lt;dbl&gt;, Gms_sd &lt;dbl&gt;,
+## #   `Fantasy Points/Game_sd` &lt;dbl&gt;, `Total Fantasy Points_sd` &lt;dbl&gt;, `Contract
+## #   Value_sd` &lt;dbl&gt;, `Projected Fantasy Points if Played All Games_sd` &lt;dbl&gt;</code></pre>
+<pre class="r"><code>#Visualization of all pairwise combinations
+library(GGally)</code></pre>
+<pre><code>## Registered S3 method overwritten by &#39;GGally&#39;:
+##   method from   
+##   +.gg   ggplot2</code></pre>
+<pre class="r"><code>ggpairs(cluster_data, aes(color = cluster))</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="../../project/project1_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<div id="i-first-initiated-the-clustering-of-my-data-using-the-numeric-variables-gms-fantasy-pointsgame-total-fantasy-points-contract-value-projected-fantasy-points-if-played-all-games.-i-then-found-the-ideal-number-of-clusters-for-maximizing-my-silhoutte-width-using-the-pam-clustering-silhoutte-method.-the-goodness-of-fit-plot-showed-that-the-ideal-number-was-4-so-i-moved-forward-and-produced-a-cluster-analysis-table.-the-average-silhouette-width-of-pam1-was-calculated-as-approximately-0.385-which-indicates-that-a-weak-structure-was-found-and-could-be-artificial-however-because-the-goodness-of-fit-plot-showed-that-the-ideal-number-was-4-i-moved-on.-i-then-produced-a-scatterplot-of-the-cluster-data-measuring-fantasy-pointsgame-against-contract-value.-this-showed-the-four-clusters-with-the-red-cluster-being-the-most-spread-out-but-least-voluminous.-it-also-showed-the-purple-cluster-being-clumped-together-in-the-bottom-left-corner-with-the-least-variation-among-the-four-clusters.-afterwards-i-printed-the-summary-statistics-mean-median-and-standard-deviation-of-the-clusters.-cluster-1-had-universally-positive-summary-statistics-while-cluster-3-had-the-most-negative-summary-statistics.-finally-i-created-a-visualization-of-all-the-numeric-variable-pairwise-combinations.-this-showed-correlations-consistent-with-my-correlation-heat-maps-and-provided-interesting-plots." class="section level5">
+<h5>I first initiated the clustering of my data using the numeric variables Gms, <code>Fantasy Points/Game</code>, <code>Total Fantasy Points</code>, <code>Contract Value</code>, <code>Projected Fantasy Points if Played All Games</code>. I then found the ideal number of clusters for maximizing my silhoutte width using the PAM clustering silhoutte method. The goodness of fit plot showed that the ideal number was 4, so I moved forward and produced a cluster analysis table. The average silhouette width of pam1 was calculated as approximately 0.385, which indicates that a weak structure was found and could be artificial, however because the goodness of fit plot showed that the ideal number was 4, I moved on. I then produced a scatterplot of the cluster data measuring Fantasy Points/Game against Contract Value. This showed the four clusters, with the red cluster being the most spread out but least voluminous. It also showed the purple cluster being clumped together in the bottom left corner, with the least variation among the four clusters. Afterwards, I printed the summary statistics (mean, median, and standard deviation) of the clusters. Cluster 1 had universally positive summary statistics, while cluster 3 had the most negative summary statistics. Finally, I created a visualization of all the numeric variable pairwise combinations. This showed correlations consistent with my correlation heat maps, and provided interesting plots.</h5>
+</div>
+</div>
+
+            
+        <hr>         <div class="related-posts">
+                <h5>Related Posts</h5>
+                
+              </div> 
+            </div>
+          </div>
+
+   <hr>  <div class="disqus">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+
+    (function() {
+      
+      
+      if (window.location.hostname == "localhost")
+        return;
+
+      var disqus_shortname = '';
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com/" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div> 
+        </div>
+      </div>
+    </div>
+
+    
+    <footer>
+  <div id="footer">
+    <div class="container">
+      <p class="text-muted">&copy; All rights reserved. Powered by <a href="https://gohugo.io/">Hugo</a> and
+      <a href="http://www.github.com/nurlansu/hugo-sustain/">sustain</a> with ♥</p>
+    </div>
+  </div>
+</footer>
+<div class="footer"></div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="../../js/docs.min.js"></script>
+<script src="../../js/main.js"></script>
+
+<script src="../../js/ie10-viewport-bug-workaround.js"></script>
+
+
+    
+  </body>
+</html>
