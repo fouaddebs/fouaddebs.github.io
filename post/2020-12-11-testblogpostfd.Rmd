@@ -1,26 +1,40 @@
 ---
-title: Post 1
+title: R Studio and Python
 author: ''
 date: '2020-12-11'
 slug: post1
 categories: []
 tags: []
-description: 'My first blog post!'
+description: 'Discussing Python and R Studio'
 ---
+This semester, we have been almost exclusively working in R studio, as we conducted projects and learned how to code in R. Recently, I was introduced to the possibility of coding in Python within R Studio. Being able to use a second language in R has been really cool, especially as I navigate the differences between R and Python and have learned how they can work together.
+
+An example of the way that R and Python can interact using the Reticulate pacakge is below:
+
 ```{r}
 library(reticulate)
-hi<-"Hello"
-```
-```{python}
-hi="world"
-print(r.hi,hi)
-``````{r}
-cat(c(hi,py$hi))
+Lakers<-"The Los Angeles Lakers"
 ```
 
+The above part is the R code to start the statement: "The Los Angeles Lakers are your 2020 World Champions!" The statement is continued using Python code below and is printed via Python code.
+
+```{python}
+Champions="are your 2020 World Champions!"
+
+print(r.Lakers,Champions)
+```
+
+Now we use R to print the full message once again. 
+```{r}
+cat(c(Lakers,py$Champions))
+```
+As you can see, they are identical and R and Python code can be used simulataneously to create one output.
+
+![](/post/2020-12-11-testblogpostfd_files/LakersChamps.jpg)
+
+Here are a few links to a couple of my projects from this past semester!
 
 [Link to Project 1](/project/project1/)   
 [Link to Project 2](/project/project2/)   
-[Link to Resume](/resume/)  
 [Link to Google](https://www.google.com)
 

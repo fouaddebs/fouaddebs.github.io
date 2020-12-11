@@ -8,15 +8,13 @@
     <language>en-US</language>
     <lastBuildDate>Fri, 11 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Post 1</title>
+      <title>R Studio and Python</title>
       <link>/post/2020/12/11/post1/</link>
       <pubDate>Fri, 11 Dec 2020 00:00:00 +0000</pubDate>
       
       <guid>/post/2020/12/11/post1/</guid>
-      <description>library(reticulate) hi&amp;lt;-&amp;quot;Hello&amp;quot; hi=&amp;quot;world&amp;quot; print(r.hi,hi) ## Hello world cat(c(hi,py$hi)) ## Hello world Link to Project 1
-Link to Project 2
-Link to Resume
-Link to Google</description>
+      <description>This semester, we have been almost exclusively working in R studio, as we conducted projects and learned how to code in R. Recently, I was introduced to the possibility of coding in Python within R Studio. Being able to use a second language in R has been really cool, especially as I navigate the differences between R and Python and have learned how they can work together.
+An example of the way that R and Python can interact using the Reticulate pacakge is below:</description>
     </item>
     
     <item>

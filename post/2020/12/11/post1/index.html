@@ -7,7 +7,7 @@
     <meta name="author" content="Fouad Debs" />
     
     <link rel="shortcut icon" type="image/x-icon" href="../../../../../img/favicon.ico">
-    <title>Post 1</title>
+    <title>R Studio and Python</title>
     <meta name="generator" content="Hugo 0.79.0" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="../../../../../css/main.css" />
@@ -54,7 +54,7 @@
       <div class="container">
         <div class="blog-post">
           <h3>
-            <strong><a href="../../../../../post/2020/12/11/post1/">Post 1</a></strong>
+            <strong><a href="../../../../../post/2020/12/11/post1/">R Studio and Python</a></strong>
           </h3>
         </div>
  
@@ -72,16 +72,26 @@
               
 
 
+<p>This semester, we have been almost exclusively working in R studio, as we conducted projects and learned how to code in R. Recently, I was introduced to the possibility of coding in Python within R Studio. Being able to use a second language in R has been really cool, especially as I navigate the differences between R and Python and have learned how they can work together.</p>
+<p>An example of the way that R and Python can interact using the Reticulate pacakge is below:</p>
 <pre class="r"><code>library(reticulate)
-hi&lt;-&quot;Hello&quot;</code></pre>
-<pre class="python"><code>hi=&quot;world&quot;
-print(r.hi,hi)</code></pre>
-<pre><code>## Hello world</code></pre>
-<pre class="r"><code>cat(c(hi,py$hi))</code></pre>
-<pre><code>## Hello world</code></pre>
+Lakers&lt;-&quot;The Los Angeles Lakers&quot;</code></pre>
+<p>The above part is the R code to start the statement: &quot;The Los Angeles Lakers are your 2020 World Champions!&quot; The statement is continued using Python code below and is printed via Python code.</p>
+<pre class="python"><code>Champions=&quot;are your 2020 World Champions!&quot;
+
+print(r.Lakers,Champions)</code></pre>
+<pre><code>## The Los Angeles Lakers are your 2020 World Champions!</code></pre>
+<p>Now we use R to print the full message once again.</p>
+<pre class="r"><code>cat(c(Lakers,py$Champions))</code></pre>
+<pre><code>## The Los Angeles Lakers are your 2020 World Champions!</code></pre>
+<p>As you can see, they are identical and R and Python code can be used simulataneously to create one output.</p>
+<div class="figure">
+<img src="../../../../../post/2020-12-11-testblogpostfd_files/LakersChamps.jpg" />
+
+</div>
+<p>Here are a few links to a couple of my projects from this past semester!</p>
 <p><a href="../../../../../project/project1/">Link to Project 1</a><br />
 <a href="../../../../../project/project2/">Link to Project 2</a><br />
-<a href="../../../../../resume/">Link to Resume</a><br />
 <a href="https://www.google.com">Link to Google</a></p>
 
             
